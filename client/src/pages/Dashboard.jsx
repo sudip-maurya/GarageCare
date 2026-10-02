@@ -224,8 +224,7 @@ const Dashboard = () => {
         if (seen.has(v.vehicleId)) return false;
         seen.add(v.vehicleId);
         return true;
-      })
-      .slice(0, 6);
+      });
   })();
 
   /* ---------- Financial / outstanding (existing bill data) ---------- */
@@ -634,7 +633,7 @@ const Dashboard = () => {
                   <small className="text-muted">All vehicles are up to date.</small>
                 </div>
               ) : (
-                <div className="d-flex flex-column gap-2">
+                <div className="dash-attention-list">
                   {attentionVehicles.map(v => {
                     const TypeIcon = v.type === 'Service' ? Wrench : (v.type === 'Insurance' ? ShieldCheck : FileCheck);
                     const pill = v.days < 0
@@ -666,7 +665,7 @@ const Dashboard = () => {
         </div>
 
         <div className="col-lg-6">
-          <div className="dash-card dash-card-compact h-100">
+          <div className="dash-card h-100">
             <div className="dash-card-head">
               <h6 className="mb-0 fw-bold d-flex align-items-center gap-2">
                 <span className="dash-head-icon dash-head-success"><Receipt size={15} /></span>
@@ -676,38 +675,76 @@ const Dashboard = () => {
             </div>
             <div className="dash-card-body p-0">
               {loading ? (
-                <div className="dash-empty">Loading bills...</div>
+                <div className="dash-empty m-3">Loading bills...</div>
               ) : (stats.recentBills || []).length === 0 ? (
-                <div className="dash-empty dash-empty-success">
+                <div className="dash-empty dash-empty-success m-3">
                   <span className="dash-empty-icon"><Receipt size={20} /></span>
                   <strong>No bills generated yet</strong>
                   <small className="text-muted">Invoices created from the Bills page will appear here.</small>
                 </div>
               ) : (
-                <div className="table-responsive">
+                <div className="table-responsive dash-recent-bills-wrap">
                   <table className="table dash-table align-middle mb-0">
                     <thead>
                       <tr>
-                        <th>Bill No.</th>
-                        <th>Customer</th>
-                        <th className="text-end">Amount</th>
-                        <th className="text-end">Status</th>
+                        <th className="col-bill-no ps-3">Bill No.</th>
+                        <th className="col-customer">Customer</th>
+                        <th className="col-amount text-end">Amount</th>
+                        <th className="col-status text-end pe-3">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {stats.recentBills.map(bill => {
                         const info = billStatusInfo(bill);
+                        const vehicleNum = bill.vehicle?.vehicleNumber || bill.vehicleDetails?.vehicleNumber;
+                        const vehicleModel = [bill.vehicle?.brand, bill.vehicle?.model].filter(Boolean).join(' ');
+                        const vehicleText = [vehicleNum, vehicleModel].filter(Boolean).join(' • ');
+                        const billDateStr = bill.date
+                          ? new Date(bill.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+                          : '';
+
                         return (
-                          <tr key={bill._id}>
-                            <td className="dash-bill-no">{bill.billNumber}</td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <span className={`dash-mini-avatar ${avatarTone(info.tone)}`}>{initialsOf(billCustomerName(bill))}</span>
-                                <span className="text-truncate">{billCustomerName(bill)}</span>
+                          <tr
+                            key={bill._id}
+                            className="dash-bill-row"
+                            onClick={() => navigate('/bills')}
+                            role="button"
+                            title={`View Bill ${bill.billNumber}`}
+                          >
+                            <td className="ps-3">
+                              <div className="dash-bill-cell">
+                                <span className="dash-bill-no">{bill.billNumber}</span>
+                                {billDateStr && <span className="dash-bill-date">{billDateStr}</span>}
                               </div>
                             </td>
-                            <td className="text-end fw-semibold">{inr(bill.totalAmount)}</td>
-                            <td className="text-end"><span className={`dash-status ${info.tone}`}>{info.label}</span></td>
+                            <td>
+                              <div className="d-flex align-items-center gap-2" style={{ minWidth: 0 }}>
+                                <span className={`dash-mini-avatar ${avatarTone(info.tone)}`}>
+                                  {initialsOf(billCustomerName(bill))}
+                                </span>
+                                <div className="dash-bill-customer-info">
+                                  <span className="dash-bill-customer-name">
+                                    {billCustomerName(bill)}
+                                  </span>
+                                  {vehicleText && (
+                                    <span className="dash-bill-vehicle-text">
+                                      {vehicleText}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="text-end">
+                              <div className="dash-bill-amount">{inr(bill.totalAmount)}</div>
+                              {Number(bill.outstanding) > 0 ? (
+                                <span className="dash-bill-due text-danger">Due: {inr(bill.outstanding)}</span>
+                              ) : (
+                                <span className="dash-bill-due text-muted">Paid in full</span>
+                              )}
+                            </td>
+                            <td className="text-end pe-3">
+                              <span className={`dash-status ${info.tone}`}>{info.label}</span>
+                            </td>
                           </tr>
                         );
                       })}

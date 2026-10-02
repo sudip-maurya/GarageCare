@@ -113,6 +113,10 @@ async function startServer() {
 
     await connectDB();
 
+    // Ensure all bills and services are in 100% sync on startup
+    const { syncBillsAndServices } = require('./utils/serviceSync');
+    await syncBillsAndServices();
+
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`🚗 GarageCare server running on port ${PORT}`);

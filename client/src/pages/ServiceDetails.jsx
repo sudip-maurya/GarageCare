@@ -75,21 +75,74 @@ const ServiceDetails = () => {
         }
       }
 
-      // Consolidate & deduplicate services for this vehicle (current service + /services/vehicle/ records only)
+      // Consolidate & deduplicate services for this vehicle
+      // Requirement: Service History me har linked bill ke liye ek entry dikhni chahiye,
+      // bill date ke saath, bill date ke order me (latest first).
       const serviceMap = new Map();
-      if (currentService && currentService._id) {
-        serviceMap.set(String(currentService._id), { ...currentService });
+
+      // 1. First, map an entry for every linked bill using the bill's exact date and items
+      for (const b of billsArray) {
+        if (!b || !b._id) continue;
+        const linkedServiceId = b.service?._id || (typeof b.service === 'string' ? b.service : null);
+        const mapKey = linkedServiceId ? String(linkedServiceId) : `bill_${b._id}`;
+
+        const workText = (Array.isArray(b.items) && b.items.length > 0)
+          ? b.items.map(i => i.description || i.itemDescription).filter(Boolean).join(', ')
+          : (b.service?.workPerformed || 'Service');
+
+        serviceMap.set(mapKey, {
+          _id: linkedServiceId || b._id,
+          billId: b._id,
+          serviceDate: b.date,
+          workPerformed: workText || 'Service'
+        });
       }
-      for (const s of historyList) {
-        if (s && s._id) {
-          serviceMap.set(String(s._id), { ...s });
+
+      // 2. Add currentService if not already represented by a bill
+      if (currentService && currentService._id) {
+        const curId = String(currentService._id);
+        if (!serviceMap.has(curId)) {
+          const matchingBill = billsArray.find(b => String(b.service?._id || b.service) === curId);
+          if (matchingBill) {
+            const workText = (Array.isArray(matchingBill.items) && matchingBill.items.length > 0)
+              ? matchingBill.items.map(i => i.description || i.itemDescription).filter(Boolean).join(', ')
+              : (currentService.workPerformed || 'Service');
+            serviceMap.set(curId, {
+              ...currentService,
+              serviceDate: matchingBill.date,
+              workPerformed: workText || 'Service'
+            });
+          } else {
+            serviceMap.set(curId, { ...currentService });
+          }
         }
       }
 
-      // Sort services by service date, newest/latest first
+      // 3. Add any standalone services from historyList not already mapped
+      for (const s of historyList) {
+        if (!s || !s._id) continue;
+        const sId = String(s._id);
+        if (!serviceMap.has(sId)) {
+          const matchingBill = billsArray.find(b => String(b.service?._id || b.service) === sId);
+          if (matchingBill) {
+            const workText = (Array.isArray(matchingBill.items) && matchingBill.items.length > 0)
+              ? matchingBill.items.map(i => i.description || i.itemDescription).filter(Boolean).join(', ')
+              : (s.workPerformed || 'Service');
+            serviceMap.set(sId, {
+              ...s,
+              serviceDate: matchingBill.date,
+              workPerformed: workText || 'Service'
+            });
+          } else {
+            serviceMap.set(sId, { ...s });
+          }
+        }
+      }
+
+      // 4. Sort services by service date, newest/latest first
       const sortedHistory = Array.from(serviceMap.values()).sort((a, b) => {
-        const timeA = new Date(a.serviceDate || a.createdAt || 0).getTime();
-        const timeB = new Date(b.serviceDate || b.createdAt || 0).getTime();
+        const timeA = new Date(a.serviceDate || a.date || a.createdAt || 0).getTime();
+        const timeB = new Date(b.serviceDate || b.date || b.createdAt || 0).getTime();
         if (timeA !== timeB) return timeB - timeA;
         const createA = new Date(a.createdAt || 0).getTime();
         const createB = new Date(b.createdAt || 0).getTime();

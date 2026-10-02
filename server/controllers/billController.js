@@ -9,6 +9,7 @@ const Vehicle = require('../models/Vehicle');
 const Service = require('../models/Service');
 const { attachPaymentSummaries, calculatePaymentState, getCompletedPaymentTotal, syncBillPaymentSummary } = require('../utils/paymentSummary');
 const { getPagination, paginatedResponse } = require('../utils/pagination');
+const { syncServiceForBill, removeServiceForDeletedBill } = require('../utils/serviceSync');
 
 // @desc    Get all bills
 // @route   GET /api/bills
@@ -246,12 +247,20 @@ const createBill = async (req, res) => {
 
     // Atomic Bill Number generation via Counter
     const currentYear = new Date().getFullYear();
-    const c = await Counter.findOneAndUpdate(
+    let c = await Counter.findOneAndUpdate(
       { _id: 'billNumber' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
-    const billNumber = `INV-${currentYear}-${String(c.seq).padStart(4, '0')}`;
+    let billNumber = `INV-${currentYear}-${String(c.seq).padStart(4, '0')}`;
+    while (await Bill.exists({ billNumber })) {
+      c = await Counter.findOneAndUpdate(
+        { _id: 'billNumber' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      billNumber = `INV-${currentYear}-${String(c.seq).padStart(4, '0')}`;
+    }
 
     const bill = await Bill.create({
       billNumber,
@@ -294,6 +303,7 @@ const createBill = async (req, res) => {
     }
 
     await syncBillPaymentSummary(bill._id);
+    await syncServiceForBill(bill);
 
     const synced = await Bill.findById(bill._id)
       .populate('customer', 'name mobile')
@@ -459,6 +469,7 @@ const updateBill = async (req, res) => {
 
     // Always finish with syncBillPaymentSummary(bill._id) and return the synced bill
     await syncBillPaymentSummary(bill._id);
+    await syncServiceForBill(bill);
 
     const updatedBill = await Bill.findById(bill._id)
       .populate('customer', 'name mobile')
@@ -553,6 +564,7 @@ const deleteBill = async (req, res) => {
 
     // Remove the bill's payment ledger rows so no orphaned payments remain
     await Payment.deleteMany({ bill: bill._id });
+    await removeServiceForDeletedBill(bill);
     await bill.deleteOne();
 
     res.json({ message: 'Bill deleted successfully' });
