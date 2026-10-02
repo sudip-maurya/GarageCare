@@ -16,11 +16,11 @@ const getCustomers = async (req, res) => {
     if (isPaginated) {
       const [total, customers] = await Promise.all([
         Customer.countDocuments(),
-        Customer.find().sort({ createdAt: -1 }).skip(skip).limit(limit)
+        Customer.find().populate('vehicles', 'vehicleNumber model brand vehicleType').sort({ createdAt: -1 }).skip(skip).limit(limit)
       ]);
       return res.json(paginatedResponse({ data: customers, total, page, limit }));
     }
-    const customers = await Customer.find().sort({ createdAt: -1 });
+    const customers = await Customer.find().populate('vehicles', 'vehicleNumber model brand vehicleType').sort({ createdAt: -1 });
     res.json(customers);
   } catch (error) {
     console.error('getCustomers:', error.message);
@@ -121,6 +121,18 @@ const updateCustomer = async (req, res) => {
     }
 
     const updatedCustomer = await customer.save();
+
+    // Keep bill snapshots in sync with updated customer contact info
+    await Bill.updateMany(
+      { customer: customer._id },
+      {
+        $set: {
+          'customerDetails.name': customer.name,
+          'customerDetails.mobile': customer.mobile
+        }
+      }
+    );
+
     res.json(updatedCustomer);
   } catch (error) {
     if (error.code === 11000) {

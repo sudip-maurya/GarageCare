@@ -306,6 +306,53 @@
 }
 .cust-mobile { color: #475569; white-space: nowrap; }
 
+/* Vehicle column cell (matches Name + Mobile pattern) */
+.cust-vehicle-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cust-vehicle-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cust-vehicle-num {
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+  letter-spacing: 0.2px;
+}
+.cust-vehicle-more {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  font-size: 0.70rem;
+  font-weight: 600;
+  line-height: 1.3;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  cursor: help;
+  transition: all 0.15s ease;
+}
+.cust-vehicle-more:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+.cust-vehicle-desc {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+.cust-vehicle-none {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
 /* Outstanding pills */
 .cust-pill {
   display: inline-flex;

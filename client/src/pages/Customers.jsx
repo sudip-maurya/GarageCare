@@ -8,6 +8,7 @@ import '../customers.css';
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [customerOutstandingMap, setCustomerOutstandingMap] = useState({});
+  const [customerVehiclesMap, setCustomerVehiclesMap] = useState({});
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,11 +36,12 @@ const Customers = () => {
   const fetchCustomersAndOutstanding = async () => {
     setLoading(true);
     try {
-      const [customersRes, billsRes] = await Promise.all([
+      const [customersRes, billsRes, vehiclesRes] = await Promise.all([
         api.get('/customers'),
-        api.get('/payments/outstanding').catch(() => ({ data: [] }))
+        api.get('/payments/outstanding').catch(() => ({ data: [] })),
+        api.get('/vehicles').catch(() => ({ data: [] }))
       ]);
-      setCustomers(customersRes.data);
+      setCustomers(customersRes.data || []);
 
       // Build customer outstanding balance map
       const map = {};
@@ -54,11 +56,45 @@ const Customers = () => {
         }
       });
       setCustomerOutstandingMap(map);
+
+      // Build customer vehicles map
+      const vMap = {};
+      (vehiclesRes.data || []).forEach(v => {
+        const custId = v.customer?._id || v.customer;
+        if (custId) {
+          const idStr = String(custId);
+          if (!vMap[idStr]) {
+            vMap[idStr] = [];
+          }
+          vMap[idStr].push(v);
+        }
+      });
+      setCustomerVehiclesMap(vMap);
     } catch (error) {
       console.error('Error fetching customers', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const getCustomerVehicles = (customer) => {
+    if (Array.isArray(customer?.vehicles) && customer.vehicles.length > 0) {
+      return customer.vehicles;
+    }
+    return customerVehiclesMap[String(customer?._id)] || [];
+  };
+
+  const getVehicleDesc = (v) => {
+    if (!v) return '';
+    const brand = (v.brand || '').trim();
+    const model = (v.model || '').trim();
+    if (brand && model) {
+      if (model.toLowerCase().startsWith(brand.toLowerCase())) {
+        return model;
+      }
+      return `${brand} ${model}`;
+    }
+    return model || brand || v.vehicleType || '';
   };
 
   useEffect(() => {
@@ -115,7 +151,13 @@ const Customers = () => {
   const filteredCustomers = customers.filter(c => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
-    return (c.name || '').toLowerCase().includes(q) || (c.mobile || '').includes(q);
+    const custVehicles = getCustomerVehicles(c);
+    const vehicleMatches = custVehicles.some(v => 
+      (v.vehicleNumber || '').toLowerCase().includes(q) ||
+      (v.model || '').toLowerCase().includes(q) ||
+      (v.brand || '').toLowerCase().includes(q)
+    );
+    return (c.name || '').toLowerCase().includes(q) || (c.mobile || '').includes(q) || vehicleMatches;
   });
 
   const initials = (name) => {
@@ -180,7 +222,7 @@ const Customers = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Mobile Number</th>
+                <th>Vehicle</th>
                 <th>Total Outstanding</th>
                 <th>Actions</th>
               </tr>
@@ -193,6 +235,10 @@ const Customers = () => {
               ) : (
                 filteredCustomers.map((customer, idx) => {
                   const outstanding = customerOutstandingMap[String(customer._id)] || 0;
+                  const custVehicles = getCustomerVehicles(customer);
+                  const primaryVehicle = custVehicles[0];
+                  const extraVehicles = custVehicles.slice(1);
+
                   return (
                     <tr key={customer._id}>
                       <td>
@@ -204,7 +250,31 @@ const Customers = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="cust-mobile">{customer.mobile}</td>
+                      <td>
+                        {primaryVehicle ? (
+                          <div className="cust-vehicle-cell">
+                            <div className="cust-vehicle-top">
+                              <span className="cust-vehicle-num">{primaryVehicle.vehicleNumber}</span>
+                              {extraVehicles.length > 0 && (
+                                <span
+                                  className="cust-vehicle-more"
+                                  title={`Other vehicles:\n` + extraVehicles.map(v => {
+                                    const desc = getVehicleDesc(v);
+                                    return `• ${v.vehicleNumber}${desc ? ` (${desc})` : ''}`;
+                                  }).join('\n')}
+                                >
+                                  +{extraVehicles.length} more
+                                </span>
+                              )}
+                            </div>
+                            <div className="cust-vehicle-desc">
+                              {getVehicleDesc(primaryVehicle) || '—'}
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="cust-vehicle-none">—</span>
+                        )}
+                      </td>
                       <td>
                         {outstanding > 0 ? (
                           <button

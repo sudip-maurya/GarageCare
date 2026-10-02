@@ -131,8 +131,8 @@ const ViewBill = () => {
   const garageAddress = 'Shop No. 1, Arch Gold Building, SV Road, Kandivli West, Opp Honda Showroom, Mumbai 400067';
 
   const garageContact = '9619966132';
-  const customerName = bill.customerDetails?.name || bill.customer?.name || '';
-  const customerMobile = bill.customerDetails?.mobile || bill.customer?.mobile || '';
+  const customerName = bill.customer?.name || bill.customerDetails?.name || '';
+  const customerMobile = bill.customer?.mobile || bill.customerDetails?.mobile || '';
   const vehicleNumber = bill.vehicleDetails?.vehicleNumber || bill.vehicle?.vehicleNumber || '';
   const discountAmount = Number(bill.discount) || 0;
   const subtotal = totalAmount + discountAmount;

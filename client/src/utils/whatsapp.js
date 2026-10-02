@@ -58,8 +58,8 @@ const buildSignature = (garageName, garagePhone) => {
 };
 
 export const getWhatsAppUrl = (bill, garageNameParam, garagePhoneParam) => {
-  const customerName = bill.customerDetails?.name || bill.customer?.name || 'Customer';
-  const mobile = bill.customerDetails?.mobile || bill.customer?.mobile;
+  const customerName = bill.customer?.name || bill.customerDetails?.name || 'Customer';
+  const mobile = bill.customer?.mobile || bill.customerDetails?.mobile;
 
   if (!mobile) {
     return { error: 'No mobile number found for this customer.' };
@@ -114,8 +114,8 @@ export const getWhatsAppUrl = (bill, garageNameParam, garagePhoneParam) => {
 };
 
 export const getPaymentReminderWhatsAppUrl = (bill, garageNameParam, garagePhoneParam) => {
-  const customerName = bill.customerDetails?.name || bill.customer?.name || 'Customer';
-  const mobile = bill.customerDetails?.mobile || bill.customer?.mobile;
+  const customerName = bill.customer?.name || bill.customerDetails?.name || 'Customer';
+  const mobile = bill.customer?.mobile || bill.customerDetails?.mobile;
 
   if (!mobile) {
     return { error: 'No mobile number found for this customer.' };
@@ -152,8 +152,8 @@ export const getPaymentReminderWhatsAppUrl = (bill, garageNameParam, garagePhone
 };
 
 export const getReminderWhatsAppUrl = (reminder, garageName = 'My Garage', garagePhoneParam) => {
-  const customerName = reminder.customer?.name || 'Customer';
-  const mobile = reminder.customer?.mobile;
+  const customerName = reminder.customer?.name || reminder.customerDetails?.name || 'Customer';
+  const mobile = reminder.customer?.mobile || reminder.customerDetails?.mobile;
 
   if (!mobile) {
     return { error: 'No mobile number found for this customer.' };

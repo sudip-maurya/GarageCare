@@ -529,8 +529,8 @@ const Reminders = () => {
                         </div>
                       </td>
                       <td>
-                        <div className="rem-cust-name">{rem.customer?.name || 'Customer'}</div>
-                        <div className="rem-cust-mobile">{rem.customer?.mobile || 'No Mobile'}</div>
+                        <div className="rem-cust-name">{rem.customer?.name || rem.customerDetails?.name || 'Customer'}</div>
+                        <div className="rem-cust-mobile">{rem.customer?.mobile || rem.customerDetails?.mobile || 'No Mobile'}</div>
                       </td>
                       <td>
                         {getTypeBadge(rem.type)}

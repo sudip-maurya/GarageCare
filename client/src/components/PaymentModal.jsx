@@ -296,7 +296,7 @@ const PaymentModal = ({ bill, show, onClose, onPaymentUpdated }) => {
                 <hr className="pm-divider my-3" />
                 <div className="d-flex justify-content-between align-items-center">
                   <span className="pm-subtitle">
-                    Customer: <strong style={{ color: '#0f1b33' }}>{currentBill.customerDetails?.name || currentBill.customer?.name}</strong> ({currentBill.customerDetails?.mobile || currentBill.customer?.mobile || 'N/A'})
+                    Customer: <strong style={{ color: '#0f1b33' }}>{currentBill.customer?.name || currentBill.customerDetails?.name}</strong> ({currentBill.customer?.mobile || currentBill.customerDetails?.mobile || 'N/A'})
                   </span>
                   {outstanding > 0 && (
                     <span className="pm-subtitle">

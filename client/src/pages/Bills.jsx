@@ -115,11 +115,14 @@ const Bills = () => {
     .filter(bill => {
       // Search: unchanged - same fields, same matching as before.
       if (searchQuery) {
-        const q = searchQuery.toLowerCase();
+        const custName = bill.customer?.name || bill.customerDetails?.name || '';
+        const custMobile = bill.customer?.mobile || bill.customerDetails?.mobile || '';
+        const vehNum = bill.vehicle?.vehicleNumber || bill.vehicleDetails?.vehicleNumber || '';
         const matchesSearch =
           bill.billNumber.toLowerCase().includes(q) ||
-          bill.customer?.name?.toLowerCase().includes(q) ||
-          bill.vehicle?.vehicleNumber?.toLowerCase().includes(q);
+          custName.toLowerCase().includes(q) ||
+          custMobile.toLowerCase().includes(q) ||
+          vehNum.toLowerCase().includes(q);
         if (!matchesSearch) return false;
       }
 
@@ -177,7 +180,7 @@ const Bills = () => {
     window.open(url, '_blank', 'noopener,noreferrer');
     setFeedback({
       type: 'info',
-      message: `WhatsApp payment reminder opened for ${bill.customerDetails?.name || bill.customer?.name}.`
+      message: `WhatsApp payment reminder opened for ${bill.customer?.name || bill.customerDetails?.name}.`
     });
   };
 
@@ -370,8 +373,12 @@ const Bills = () => {
                         <span className="bl-date">{new Date(bill.date).toLocaleDateString()}</span>
                       </td>
                       <td>
-                        <div className="bl-customer-name" title={bill.customer?.name}>{bill.customer?.name}</div>
-                        <span className="bl-customer-phone">{bill.customer?.mobile}</span>
+                        <div className="bl-customer-name" title={bill.customer?.name || bill.customerDetails?.name}>
+                          {bill.customer?.name || bill.customerDetails?.name}
+                        </div>
+                        <span className="bl-customer-phone">
+                          {bill.customer?.mobile || bill.customerDetails?.mobile || '—'}
+                        </span>
                       </td>
                       <td>
                         <span className="bl-vehicle-no">{bill.vehicle?.vehicleNumber}</span>

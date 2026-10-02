@@ -307,7 +307,7 @@ const Payments = () => {
     window.open(url, '_blank', 'noopener,noreferrer');
     setFeedback({
       type: 'info',
-      message: `WhatsApp payment reminder opened for ${bill.customerDetails?.name || bill.customer?.name}.`
+      message: `WhatsApp payment reminder opened for ${bill.customer?.name || bill.customerDetails?.name}.`
     });
   };
 
@@ -346,8 +346,8 @@ const Payments = () => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
     const billNo = (bill.billNumber || '').toLowerCase();
-    const custName = (bill.customerDetails?.name || bill.customer?.name || '').toLowerCase();
-    const custMobile = (bill.customerDetails?.mobile || bill.customer?.mobile || '').toLowerCase();
+    const custName = (bill.customer?.name || bill.customerDetails?.name || '').toLowerCase();
+    const custMobile = (bill.customer?.mobile || bill.customerDetails?.mobile || '').toLowerCase();
     const vehNo = (bill.vehicleDetails?.vehicleNumber || bill.vehicle?.vehicleNumber || '').toLowerCase();
 
     return billNo.includes(q) || custName.includes(q) || custMobile.includes(q) || vehNo.includes(q);
@@ -575,8 +575,8 @@ const Payments = () => {
                       return (
                         <tr key={b._id}>
                           <td>
-                            <div className="fw-bold">{b.customerDetails?.name || b.customer?.name}</div>
-                            <small className="text-muted">{b.customerDetails?.mobile || b.customer?.mobile || '—'}</small>
+                            <div className="fw-bold">{b.customer?.name || b.customerDetails?.name}</div>
+                            <small className="text-muted">{b.customer?.mobile || b.customerDetails?.mobile || '—'}</small>
                           </td>
                           <td>
                             <Link to={`/bills/view/${b._id}`} state={{ from: '/payments' }} title="View Bill / Invoice">{b.billNumber}</Link>
