@@ -178,7 +178,7 @@ const Login = () => {
             </button>
             {showSlowHint && (
               <p className="gc-login-slow-hint">
-                Server start ho raha hai, thoda wait karo…
+                Server is starting up, please wait a moment…
               </p>
             )}
           </form>
