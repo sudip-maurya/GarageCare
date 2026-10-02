@@ -1,0 +1,678 @@
+/* =====================================================
+   Service Details — Modern SaaS-style page styles
+   Scoped to .sd-page (no global overrides)
+   ===================================================== */
+
+:root {
+  --sd-blue: #2563eb;
+  --sd-blue-dark: #1d4ed8;
+  --sd-blue-soft: #eff6ff;
+  --sd-blue-border: #bfdbfe;
+  --sd-amber-soft: #fffbeb;
+  --sd-amber-text: #b45309;
+  --sd-amber-border: #fde68a;
+  --sd-text-main: #0f172a;
+  --sd-text-secondary: #334155;
+  --sd-muted: #64748b;
+  --sd-border: #e2e8f0;
+  --sd-border-light: #eef2f7;
+  --sd-card-bg: #ffffff;
+  --sd-card-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+/* ---------- Page Layout ---------- */
+.sd-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+/* ---------- Page Header ---------- */
+.sd-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.sd-title {
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sd-text-main);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sd-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--sd-muted);
+}
+
+.sd-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: var(--sd-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.sd-back-btn:hover {
+  background: var(--sd-blue-soft);
+  border-color: var(--sd-blue);
+  color: var(--sd-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.16);
+  text-decoration: none;
+}
+
+.sd-back-btn svg {
+  color: var(--sd-muted);
+  transition: color 0.15s ease;
+}
+
+.sd-back-btn:hover svg {
+  color: var(--sd-blue);
+}
+
+/* ---------- Cards ---------- */
+.sd-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sd-card {
+  background: var(--sd-card-bg);
+  border: 1px solid var(--sd-border);
+  border-radius: 12px;
+  box-shadow: var(--sd-card-shadow);
+  overflow: hidden;
+}
+
+.sd-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--sd-border-light);
+  flex-shrink: 0;
+}
+
+.sd-card-header-bill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sd-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sd-card-header-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ---------- Modern Filter on Right of Related Bill ---------- */
+.sd-filter-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.sd-filter-icon {
+  position: absolute;
+  left: 9px;
+  color: #64748b;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sd-filter-wrap button.gc-sel-btn.sd-filter-select {
+  height: 32px;
+  min-height: 32px;
+  width: 108px;
+  min-width: 108px;
+  padding: 0 10px 0 28px;
+  border-radius: 8px;
+  border: 1px solid var(--sd-border);
+  background: #ffffff;
+  color: var(--sd-text-main);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sd-filter-wrap button.gc-sel-btn.sd-filter-select:hover:not(:disabled) {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.sd-filter-wrap button.gc-sel-btn.sd-filter-select:focus-visible {
+  border-color: var(--sd-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.sd-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.sd-card-icon-blue {
+  background: var(--sd-blue-soft);
+  color: var(--sd-blue);
+}
+
+.sd-card-header-history .sd-card-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+}
+
+.sd-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.sd-card-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--sd-text-main);
+  line-height: 1.25;
+}
+
+.sd-card-subtitle {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--sd-muted);
+  line-height: 1.2;
+}
+
+.sd-card-body {
+  padding: 14px 18px;
+}
+
+/* Compact Related Bill card — height fits its content (height: auto),
+   vertically centered row, minimal top/bottom padding */
+.sd-card-bill .sd-card-body {
+  padding: 12px 18px;
+}
+
+/* ---------- Shared label (Related Bill fields) ---------- */
+.sd-info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sd-muted);
+  margin-bottom: 3px;
+}
+
+.sd-info-label svg {
+  color: #94a3b8;
+}
+
+/* Subtle blue pill (work performed / history) */
+.sd-work-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  background: var(--sd-blue-soft);
+  color: var(--sd-blue-dark);
+  border: 1px solid var(--sd-blue-border);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Service History (modern activity rows) ---------- */
+.sd-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sd-history-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sd-history-row:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.sd-history-cal-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+  flex-shrink: 0;
+  margin-right: 14px;
+}
+
+.sd-history-date-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 170px;
+  min-width: 170px;
+  flex-shrink: 0;
+}
+
+.sd-history-date {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--sd-text-main);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.sd-history-day {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: capitalize;
+  line-height: 1.2;
+}
+
+.sd-history-divider {
+  width: 1px;
+  height: 24px;
+  background: #cbd5e1;
+  margin: 0 20px;
+  flex-shrink: 0;
+}
+
+.sd-history-work-col {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.sd-history-wrench {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.sd-history-work-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Related Bills List (Content-driven auto height, no internal scroll) ---------- */
+.sd-card-bill {
+  height: auto;
+}
+
+.sd-card-bill .sd-card-body {
+  padding: 12px 18px;
+  height: auto;
+}
+
+.sd-bills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: auto;
+  overflow: visible;
+}
+
+.sd-bills-list > .sd-bill:not(:last-child) {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--sd-border-light);
+}
+
+/* ---------- Related Bill Item ---------- */
+.sd-bill {
+  display: flex;
+  align-items: center;
+  gap: 12px 36px;
+  flex-wrap: wrap;
+}
+
+.sd-bill-field {
+  flex: 1 1 0;
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sd-bill-field-status .sd-bill-status-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sd-bill-number {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--sd-text-main);
+}
+
+.sd-bill-total {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--sd-blue-dark);
+  line-height: 1.2;
+}
+
+.sd-bill-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: var(--sd-amber-soft);
+  color: var(--sd-amber-text);
+  border: 1px solid var(--sd-amber-border);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sd-bill-status.status-paid {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+.sd-bill-status.status-partial {
+  background: var(--sd-amber-soft);
+  color: var(--sd-amber-text);
+  border-color: var(--sd-amber-border);
+}
+
+.sd-bill-status.status-pending {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.sd-bill-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.sd-view-bill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 9px;
+  background: var(--sd-blue);
+  border: 1px solid var(--sd-blue);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.25);
+  transition: all 0.15s ease;
+}
+
+.sd-delete-bill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sd-delete-bill-btn:hover:not(:disabled):not(.is-disabled) {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.14);
+}
+
+.sd-delete-bill-btn:disabled,
+.sd-delete-bill-btn.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sd-delete-bill-btn svg {
+  color: #ef4444;
+  transition: color 0.15s ease;
+}
+
+.sd-delete-bill-btn:hover:not(:disabled):not(.is-disabled) svg {
+  color: #dc2626;
+}
+
+.sd-view-bill-btn:hover {
+  background: var(--sd-blue-dark);
+  border-color: var(--sd-blue-dark);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  text-decoration: none;
+}
+
+.sd-view-bill-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ---------- Empty text ---------- */
+.sd-empty-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--sd-muted);
+}
+
+/* ---------- Desktop (≥992px): compact, content-based card heights ---------- */
+@media (min-width: 992px) {
+  .sd-page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sd-header {
+    flex-shrink: 0;
+    margin-bottom: 12px;
+  }
+
+  /* Content-based rows: every card is only as tall as its content.
+     The Service History card grows naturally (and the vertical
+     timeline line with it) as more service entries are added. */
+  .sd-cards {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: start;
+    gap: 14px;
+  }
+
+  .sd-cards > .sd-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sd-card-bill {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .sd-card-history {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
+/* ---------- Mobile (<768px): stacked, normal scrolling ---------- */
+@media (max-width: 767.98px) {
+  .sd-title {
+    font-size: 21px;
+  }
+
+  .sd-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 14px;
+  }
+
+  .sd-card-header {
+    padding: 11px 14px;
+  }
+
+  .sd-card-header-bill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .sd-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .sd-card-header-right {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .sd-card-body {
+    padding: 14px;
+  }
+
+  .sd-bill {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sd-bill-field {
+    flex: 0 0 auto;
+  }
+
+  .sd-bill-actions {
+    width: 100%;
+  }
+
+  .sd-view-bill-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sd-history-row {
+    padding: 8px 10px;
+  }
+
+  .sd-history-cal-box {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+  }
+
+  .sd-history-date-col {
+    width: 95px;
+    min-width: 95px;
+  }
+
+  .sd-history-date {
+    font-size: 12.5px;
+  }
+
+  .sd-history-day {
+    font-size: 10.5px;
+  }
+
+  .sd-history-divider {
+    margin: 0 10px;
+  }
+
+  .sd-history-work-text {
+    font-size: 12.5px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .sd-back-btn,
+  .sd-view-bill-btn,
+  .sd-delete-bill-btn,
+  .sd-history-row,
+  .sd-filter-wrap button.gc-sel-btn.sd-filter-select {
+    transition: none !important;
+    transform: none !important;
+  }
+}

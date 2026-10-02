@@ -1,0 +1,14 @@
+const fs = require('fs');
+const jx = 'src/pages/Settings.jsx';
+let s = fs.readFileSync(jx, 'utf8');
+s = s.replace(/^\uFEFF/, '');
+const out = [];
+out.push('HAS set-tabs=' + s.includes('set-tabs'));
+out.push('HAS panel-viewport=' + s.includes('set-panel-viewport'));
+out.push('HAS set-slide=' + s.includes('set-slide'));
+out.push('HAS handleTabChange=' + s.includes('handleTabChange'));
+out.push('HAS nav-link-active=' + (s.match(/nav-link/g) || []).length);
+const i = s.indexOf('Tab Content');
+out.push('TABCTX=' + JSON.stringify(s.slice(Math.max(0, i - 200), i + 600)));
+fs.writeFileSync('inspect-set.txt', out.join('\n'), 'utf8');
+console.log(out.join('\n'));

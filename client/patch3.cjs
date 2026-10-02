@@ -1,0 +1,15 @@
+const fs = require('fs');
+const p = 'src/pages/Settings.jsx';
+let s = fs.readFileSync(p, 'utf8');
+s = s.split("setActiveTab('profile')").join("handleTabChange('profile')");
+s = s.split("setActiveTab('reminders')").join("handleTabChange('reminders')");
+s = s.split("setActiveTab('security')").join("handleTabChange('security')");
+const anchor = '<div className="set-main set-main-single">';
+if (!s.includes(anchor)) throw new Error('missing anchor');
+s = s.replace(anchor, anchor + '\r\n          <div key={slideKey} className={"set-panel set-slide-" + slideDir} role="tabpanel">');
+const tail = '          </div>\r\n\r\n          \r\n        </div>';
+const idx = s.lastIndexOf(tail);
+if (idx === -1) throw new Error('missing tail');
+s = s.slice(0, idx) + '          </div>\r\n          </div>\r\n\r\n          \r\n        </div>' + s.slice(idx + tail.length);
+fs.writeFileSync(p, s);
+console.log('patched ok');

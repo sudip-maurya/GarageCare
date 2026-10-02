@@ -1,0 +1,6 @@
+HAS set-tabs=true
+HAS panel-viewport=false
+HAS set-slide=true
+HAS handleTabChange=true
+HAS nav-link-active=3
+TABCTX="import { useState, useEffect } from 'react';\r\nimport { useLocation } from 'react-router-dom';\r\nimport api from '../utils/api';\r\nimport './settings.css';\r\nimport {\r\n  Settings as SettingsIcon,\r\n  Building,\r\n  Bell,\r\n  Lock,\r\n  Save,\r\n  CheckCircle2,\r\n  AlertCircle,\r\n  Phone,\r\n  MapPin,\r\n  FileText\r\n} from 'lucide-react';\r\n\r\nconst SET_TAB_ORDER = ['profile', 'reminders', 'security'];\r\n\r\nconst Settings = () => {\r\n  const location = useLocation();\r\n  // Deep-link: header dropdown Change Password opens the Account Security tab\r\n  const [activeTab, setActiveTab] = useState(location.state?.tab || 'p"

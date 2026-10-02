@@ -1,0 +1,1032 @@
+/* ============================================================
+   GarageCare — Invoice / Bill sheet (screen + print)
+   Modern white + dark green/teal theme, rounded cards, subtle borders.
+   Scoped with the `inv-` prefix so no other page is affected.
+   ============================================================ */
+
+.inv-sheet {
+  /* palette */
+  --inv-green-900: #0b3d2e;
+  --inv-green-800: #0f5132;
+  --inv-teal-700: #0f766e;
+  --inv-teal-600: #0d9488;
+  --inv-mint-50: #f0fdfa;
+  --inv-mint-100: #ecfdf5;
+  --inv-slate-50: #f8fafc;
+  --inv-slate-100: #f1f5f9;
+  --inv-border: #e2e8f0;
+  --inv-border-2: #d7e1ea;
+  --inv-border-green: #cfe8e4;
+  --inv-text: #0f172a;
+  --inv-soft: #475569;
+  --inv-muted: #64748b;
+  --inv-green: #15803d;
+  --inv-amber: #92400e;
+  --inv-red: #b91c1c;
+
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 30px 32px 26px;
+  background: #ffffff;
+  border: 1px solid var(--inv-border);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 34px rgba(15, 23, 42, 0.06);
+  color: var(--inv-text);
+  text-align: left; /* the app shell sets text-align:center on #root */
+  font-size: 12.8px;
+  line-height: 1.45;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ---------------- Header: logo + shop name | INVOICE + bill meta ---------------- */
+.inv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+
+.inv-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.inv-logo {
+  height: 60px;
+  width: 60px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+.inv-brand-text {
+  min-width: 0;
+}
+
+.inv-shop-name {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--inv-green-900);
+}
+
+.inv-shop-line {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--inv-soft);
+  overflow-wrap: anywhere;
+}
+
+.inv-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  align-self: flex-start;
+  margin-top: -2px;
+  gap: 3px;
+  text-align: right;
+}
+
+.inv-meta-title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--inv-teal-700);
+}
+
+.inv-meta-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.inv-meta-label {
+  color: var(--inv-muted);
+}
+
+.inv-meta-value {
+  font-weight: 700;
+  color: var(--inv-text);
+  white-space: nowrap;
+}
+
+.inv-divider {
+  height: 2px;
+  margin: 18px 0 20px;
+  border: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--inv-green-900) 0%, var(--inv-teal-600) 100%);
+}
+
+/* ---------------- Status pill ---------------- */
+.inv-status {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.inv-status-paid {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+.inv-status-partial {
+  background: #fef3c7;
+  border-color: #fde68a;
+  color: var(--inv-amber);
+}
+.inv-status-pending {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+/* ---------------- Billed to / Vehicle details (two equal rounded cards) ---------------- */
+.inv-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.inv-party-card {
+  min-width: 0;
+  padding: 13px 15px;
+  background: var(--inv-slate-50);
+  border: 1px solid var(--inv-border);
+  border-radius: 12px;
+}
+
+.inv-party-label {
+  margin: 0 0 7px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--inv-teal-700);
+}
+
+.inv-party-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--inv-text);
+  overflow-wrap: anywhere;
+}
+
+.inv-party-row {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--inv-soft);
+  overflow-wrap: anywhere;
+}
+
+.inv-party-row .inv-k {
+  color: var(--inv-muted);
+}
+
+.inv-plate {
+  display: inline-block;
+  margin-bottom: 3px;
+  padding: 3px 10px;
+  background: #ffffff;
+  border: 1px solid var(--inv-border-2);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--inv-green-900);
+  white-space: nowrap;
+}
+
+/* ---------------- Section heading ---------------- */
+.inv-section-title {
+  margin: 0 0 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--inv-teal-700);
+}
+
+/* ---------------- Work performed note ---------------- */
+.inv-note-card {
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  background: #ffffff;
+  border: 1px solid var(--inv-border);
+  border-left: 3px solid var(--inv-teal-600);
+  border-radius: 10px;
+}
+
+.inv-note-label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--inv-teal-700);
+}
+
+.inv-note-text {
+  font-size: 12.2px;
+  color: var(--inv-soft);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------- Items / services table ---------------- */
+.inv-table-wrap {
+  margin-bottom: 20px;
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12.2px;
+}
+
+.inv-table thead th {
+  padding: 9px 10px;
+  background: var(--inv-mint-50);
+  border-top: 1px solid var(--inv-border-green);
+  border-bottom: 1px solid var(--inv-border-green);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--inv-green-900);
+  text-align: left;
+  white-space: nowrap;
+}
+.inv-table thead th:first-child {
+  border-left: 1px solid var(--inv-border-green);
+  border-top-left-radius: 10px;
+}
+.inv-table thead th:last-child {
+  border-right: 1px solid var(--inv-border-green);
+  border-top-right-radius: 10px;
+}
+
+.inv-table tbody td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--inv-slate-100);
+  vertical-align: top;
+  color: var(--inv-soft);
+}
+.inv-table tbody tr:nth-child(even) td {
+  background: #fcfdfe;
+}
+.inv-table tbody tr:last-child td {
+  border-bottom: 1px solid var(--inv-border);
+}
+
+.inv-col-num {
+  width: 36px;
+  color: var(--inv-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-col-type {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Amount column: always visible, never wrapped, right aligned */
+.inv-col-amount {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--inv-text);
+}
+
+.inv-table tbody tr.inv-total-row td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: 700;
+  color: var(--inv-text);
+  border-top: 1px solid var(--inv-border);
+  border-bottom: 1px solid var(--inv-border);
+  background: var(--inv-slate-50);
+}
+
+.inv-table tbody tr.inv-total-row td.inv-total-label,
+.inv-table .inv-total-label {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inv-text);
+}
+
+.inv-table .inv-total-amount {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--inv-text);
+}
+
+.inv-item-name {
+  display: block;
+  font-weight: 600;
+  color: var(--inv-text);
+  overflow-wrap: anywhere;
+}
+
+.inv-item-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.2px;
+  color: var(--inv-muted);
+  overflow-wrap: anywhere;
+}
+
+.inv-type-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  background: var(--inv-slate-100);
+  border: 1px solid var(--inv-border);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--inv-soft);
+  white-space: nowrap;
+}
+
+.inv-empty {
+  padding: 12px 0;
+  color: var(--inv-muted);
+  font-size: 12px;
+}
+
+/* Compact variant used inside the lower cards */
+.inv-table-compact {
+  font-size: 11.8px;
+}
+.inv-table-compact thead th {
+  padding: 6px 8px;
+  /* header labels may wrap to a second line so the narrow card never overflows */
+  white-space: normal;
+}
+.inv-table-compact thead th.inv-col-amount {
+  text-align: right;
+}
+.inv-table-compact tbody td {
+  padding: 6px 8px;
+  background: #ffffff;
+  /* allows the narrow card columns to shrink instead of overflowing the card */
+  overflow-wrap: anywhere;
+}
+.inv-table-compact tbody td:first-child {
+  white-space: nowrap;
+}
+.inv-table-compact tbody tr:nth-child(even) td {
+  background: #ffffff;
+}
+
+/* ---------------- Lower section: payments (left) + summary (right) ---------------- */
+.inv-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.inv-lower-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.inv-col {
+  min-width: 0;
+}
+
+.inv-card {
+  margin-bottom: 14px;
+  padding: 13px 15px;
+  background: #ffffff;
+  border: 1px solid var(--inv-border);
+  border-radius: 12px;
+}
+
+.inv-card:last-child {
+  margin-bottom: 0;
+}
+
+.inv-card-title {
+  margin: 0 0 9px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--inv-teal-700);
+}
+
+/* UPI / payment details card */
+.inv-pay-card {
+  background: var(--inv-mint-50);
+  border-color: var(--inv-border-green);
+}
+
+.inv-pay-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.inv-qr-box {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.inv-qr-btn {
+  display: inline-block;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid var(--inv-border-green);
+  border-radius: 10px;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.inv-qr {
+  display: block;
+  max-width: 100%;
+  border-radius: 7px;
+}
+
+.inv-pay-name {
+  font-size: 12.8px;
+  font-weight: 700;
+  color: var(--inv-green-900);
+}
+
+.inv-pay-row {
+  margin-top: 3px;
+  font-size: 11.8px;
+  color: var(--inv-soft);
+  overflow-wrap: anywhere;
+}
+
+.inv-pay-row .inv-k {
+  color: var(--inv-muted);
+}
+
+.inv-pay-note {
+  margin-top: 5px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--inv-muted);
+  overflow-wrap: anywhere;
+}
+
+.inv-amount-paid {
+  color: var(--inv-green);
+}
+
+/* Payment summary card */
+.inv-summary {
+  background: var(--inv-slate-50);
+}
+
+.inv-sum-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--inv-border);
+  font-size: 12.4px;
+  color: var(--inv-soft);
+}
+
+.inv-sum-row .inv-sum-value {
+  font-weight: 700;
+  color: var(--inv-text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-sum-row.inv-sum-discount .inv-sum-value,
+.inv-sum-row.inv-sum-paid .inv-sum-value {
+  color: var(--inv-green);
+}
+
+.inv-sum-row.inv-sum-total {
+  margin-top: 4px;
+  padding: 9px 0;
+  border-top: 1px solid var(--inv-border-2);
+  border-bottom: 1px solid var(--inv-border-2);
+  font-size: 13.6px;
+  font-weight: 800;
+  color: var(--inv-green-900);
+}
+
+.inv-sum-row.inv-sum-total .inv-sum-value {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--inv-green-900);
+}
+
+.inv-sum-row.inv-sum-outstanding {
+  border-bottom: 0;
+  font-weight: 700;
+  color: var(--inv-green-900);
+}
+
+.inv-sum-row.inv-sum-outstanding .inv-sum-value {
+  color: var(--inv-red);
+}
+
+.inv-sum-row.inv-sum-outstanding.is-cleared .inv-sum-value {
+  color: var(--inv-green);
+}
+
+.inv-sum-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--inv-border);
+  font-size: 12px;
+  color: var(--inv-muted);
+}
+
+/* ---------------- Footer ---------------- */
+.inv-footer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--inv-border);
+  text-align: center;
+  font-size: 11.8px;
+  color: var(--inv-muted);
+}
+
+.inv-footer strong {
+  color: var(--inv-green-800);
+}
+
+/* ---------------- Dedicated QR payment page (PDF page 2) ----------------
+   This section NEVER takes space on the normal browser Bill page.
+   It is display:none on screen and only becomes visible in the print /
+   "Save PDF" output, where it always starts on its own new A4 page
+   (see the @media print block below). */
+.inv-qr-page {
+  display: none;
+}
+
+/* ---------------- Responsive (screen only) ---------------- */
+@media screen and (max-width: 767.98px) {
+  .inv-sheet {
+    padding: 20px 16px 18px;
+    border-radius: 14px;
+  }
+  .inv-header {
+    justify-content: flex-start;
+  }
+  .inv-meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .inv-meta-row {
+    justify-content: flex-start;
+  }
+  .inv-parties,
+  .inv-lower {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .inv-logo {
+    height: 50px;
+    width: 50px;
+  }
+  .inv-shop-name {
+    font-size: 21px;
+  }
+}
+
+/* ============================================================
+   PRINT / PDF — A4, natural vertical flow, nothing clipped.
+   Sizes stay identical to the preview (no scaling / shrinking).
+   ============================================================ */
+@media print {
+  .inv-sheet {
+    /* Fill the A4 content box (210mm - 2 x 9mm margins) exactly, centered.
+       No scaling, no tiny fonts - identical type sizes to the preview. */
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Two-column rows must stay horizontal on paper. The mobile stacking rule
+     below is screen-only, but re-assert the real column templates here so the
+     PDF can never collapse Billed To / Vehicle, or Transactions / Summary
+     into stacked single-column blocks. */
+  #printable-bill .inv-parties {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  }
+  #printable-bill .inv-lower {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) !important;
+  }
+  #printable-bill .inv-lower.inv-lower-single {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* The items/services and transactions tables always span the full sheet
+     width and keep their normal horizontal columns. */
+  #printable-bill .inv-table {
+    width: 100% !important;
+    table-layout: auto;
+  }
+
+  /* QR + account details stay side-by-side inside the UPI card */
+  #printable-bill .inv-pay-body {
+    flex-wrap: nowrap;
+  }
+
+  /* Amounts are always fully visible and stay on one line */
+  .inv-col-amount,
+  .inv-sum-value,
+  .inv-meta-value,
+  .inv-plate {
+    white-space: nowrap !important;
+  }
+
+  /* Long tables (items, payment transactions) may continue on the next page
+     and repeat their header row; small blocks are never split in half. */
+  #printable-bill .inv-table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  #printable-bill .inv-table thead {
+    display: table-header-group;
+  }
+  #printable-bill .inv-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #printable-bill .inv-parties,
+  #printable-bill .inv-party-card,
+  #printable-bill .inv-note-card,
+  #printable-bill .inv-pay-card,
+  #printable-bill .inv-summary {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #printable-bill .inv-section-title,
+  #printable-bill .inv-card-title,
+  #printable-bill .inv-party-label,
+  #printable-bill .inv-note-label,
+  #printable-bill .inv-meta-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Text blocks never leave an orphan / widow line behind */
+  .inv-sheet {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* The QR enlarge button is a screen-only affordance */
+  #printable-bill .inv-qr-btn {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none !important;
+  }
+
+  #printable-bill .inv-qr {
+    max-height: 88px;
+    max-width: 88px;
+  }
+
+  #printable-bill .inv-logo {
+    height: 60px;
+    width: 60px;
+    max-height: 60px;
+    max-width: 60px;
+  }
+
+  /* ---------------------------------------------------------------
+     Dedicated QR payment page — its own full A4 page after the
+     invoice. Re-enabled from display:none for print only; it always
+     begins on a fresh page (break-before), never inherits the
+     invoice grid, uses fixed millimetre sizes (no transform
+     scaling, no shrinking) and keeps the QR aspect ratio via
+     object-fit: contain, so the QR stays sharp and scannable.
+     Colors mirror the invoice palette (variables are scoped to
+     .inv-sheet, so the standalone page repeats the same hexes).
+     --------------------------------------------------------------- */
+  .inv-qr-page {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: none;
+    min-height: 250mm; /* A4 (297mm) minus the 2 x 10mm page margins */
+    margin: 0 auto;
+    padding: 0;
+    background: #ffffff;
+    color: #0f172a;
+    break-before: page;
+    page-break-before: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    orphans: 2;
+    widows: 2;
+  }
+
+  .inv-qr-page-head {
+    display: block;
+    margin-bottom: 10mm;
+  }
+
+  .inv-qr-page-logo {
+    height: 58px;
+    width: 58px;
+    object-fit: contain;
+  }
+
+  .inv-qr-page-shop {
+    margin-top: 4px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0b3d2e;
+  }
+
+  .inv-qr-page-heading {
+    margin: 10px 0 2px;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0f766e;
+    line-height: 1.15;
+  }
+
+  .inv-qr-page-sub {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #475569;
+  }
+
+  .inv-qr-page-img {
+    display: block;
+    width: 125mm;
+    height: 125mm;
+    max-width: 125mm;
+    max-height: 125mm;
+    object-fit: contain; /* square sheet, aspect ratio preserved - no distortion */
+    padding: 5mm;
+    background: #ffffff;
+    border: 1px solid #cfe8e4;
+    border-radius: 14px;
+    margin: 4mm 0;
+  }
+
+  .inv-qr-page-details {
+    margin-top: 5mm;
+  }
+
+  .inv-qr-page-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0b3d2e;
+  }
+
+  .inv-qr-page-upi {
+    margin-top: 3mm;
+    font-size: 14px;
+    color: #475569;
+  }
+
+  .inv-qr-page-upi strong {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #0f172a;
+    white-space: nowrap;
+  }
+
+  .inv-qr-page-note {
+    margin-top: 4mm;
+    font-size: 12.5px;
+    font-style: italic;
+    color: #64748b;
+  }
+
+  .inv-qr-page-bill {
+    margin-top: 2.5mm;
+    font-size: 11.5px;
+    color: #64748b;
+  }
+
+  .inv-qr-page-bill strong {
+    color: #0f172a;
+  }
+}
+
+/* ============================================================
+   Bill View Action Toolbar (Screen-only SaaS toolbar)
+   ============================================================ */
+.vb-toolbar-wrapper {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.vb-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vb-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.vb-btn:active {
+  transform: translateY(0) !important;
+}
+
+.vb-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.vb-btn svg {
+  flex-shrink: 0;
+}
+
+/* 1. Back to Bills: subtle secondary/outline */
+.vb-btn-back {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.vb-btn-back:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+}
+
+/* 2. Secondary action (Show QR) */
+.vb-btn-secondary {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #334155;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.vb-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+}
+
+/* 3. Payment Reminder (subtle amber warning) */
+.vb-btn-reminder {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #92400e;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(245, 158, 11, 0.06);
+}
+
+.vb-btn-reminder:hover {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #78350f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(245, 158, 11, 0.12);
+}
+
+/* 4. WhatsApp: green */
+.vb-btn-whatsapp {
+  background: #16a34a;
+  border-color: #15803d;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(22, 163, 74, 0.25), 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+.vb-btn-whatsapp:hover {
+  background: #15803d;
+  border-color: #166534;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.35);
+}
+
+.vb-btn-whatsapp:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 5. Print / Save PDF: main blue action */
+.vb-btn-blue {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.28), 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.vb-btn-blue:hover {
+  background: #1d4ed8;
+  border-color: #1e40af;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+}
+
+/* 6. Manage Payment: primary action */
+.vb-btn-primary {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2), 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.vb-btn-primary:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+}
+
+.vb-feedback {
+  width: 100%;
+  margin-bottom: 16px;
+  border-radius: 10px;
+}
+

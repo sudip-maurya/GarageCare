@@ -1,0 +1,528 @@
+/* ===== GarageCare app shell: sidebar + top header (Modern SaaS) ===== */
+
+/* Base shell resets & variables */
+:root {
+  --sidebar-bg: #0f172a;
+  --sidebar-surface: #1e293b;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-text: #94a3b8;
+  --sidebar-text-active: #ffffff;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+  --topbar-bg: #ffffff;
+  --topbar-border: #e2e8f0;
+  --brand-blue: #2563eb;
+  --brand-blue-hover: #1d4ed8;
+}
+
+/* Sidebar Container — deep navy "glass" gradient (colour layers only, geometry untouched) */
+.app-sidebar {
+  background-color: var(--sidebar-bg) !important;
+  background-image:
+    radial-gradient(125% 60% at 50% -12%, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0) 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 18%),
+    linear-gradient(180deg, #121e35 0%, #0d1729 55%, #0a1220 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+/* Brand header — roomier spacing, quieter divider */
+.app-brand {
+  position: relative;
+  padding: 10px 4px 18px;
+  border-bottom: 1px solid transparent;
+  margin-bottom: 18px !important;
+  text-align: left;
+}
+
+/* Hairline separator that fades out at both ends */
+.app-brand::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.13) 22%, rgba(255, 255, 255, 0.13) 78%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.app-brand h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-tagline {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* Navigation items */
+.app-sidebar .nav-pills {
+  position: relative;
+  gap: 6px;
+}
+
+.app-sidebar .nav-item {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0 !important;
+}
+
+/* Last item (Settings) is grouped away from the operational menu with a hairline */
+.app-sidebar .nav-item:last-child {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Smooth sliding active highlight indicator */
+.sidebar-nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 11px;
+  background-color: var(--brand-blue);
+  background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 52%, #1d4ed8 100%);
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  box-shadow:
+    0 6px 18px -6px rgba(37, 99, 235, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.14) inset;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, height;
+}
+
+.sidebar-nav-indicator.is-animating {
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), height 300ms cubic-bezier(0.2, 0, 0, 1), opacity 200ms ease;
+}
+
+.app-sidebar .nav-link {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* One padding + one border width for every state, so the active pill can never
+     be a different size from its neighbours and the list never reflows. */
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: var(--sidebar-text) !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: left;
+  line-height: 1.3;
+  transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1), background-color 0.18s ease, border-color 0.18s ease, color 0.22s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+
+.app-sidebar .nav-link svg {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  color: #8b9ab1;
+  transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1), color 0.22s ease;
+  will-change: transform;
+}
+
+.app-sidebar .nav-link .nav-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Inactive nav hover — background/border/colour + smooth 4px shift to the right */
+.app-sidebar .nav-link:not(.active):hover {
+  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.055) !important;
+  border-color: rgba(255, 255, 255, 0.07);
+  color: #f1f5f9 !important;
+}
+
+.app-sidebar .nav-link:not(.active):hover svg {
+  color: #cbd5e1;
+}
+
+/* Hover icon animation — very subtle scale/translate effect, no rotation */
+.app-sidebar .nav-link:hover svg {
+  transform: scale(1.08) translateX(1px);
+}
+
+/* Active page — text & icon glow white; background is driven by sliding indicator */
+.app-sidebar .nav-link.active,
+.app-sidebar .nav-link.bg-primary {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--sidebar-text-active) !important;
+  font-weight: 600;
+}
+
+.app-sidebar .nav-link.active svg,
+.app-sidebar .nav-link.bg-primary svg {
+  color: #ffffff !important;
+}
+
+/* Active item hover: moves 4px to the right */
+.app-sidebar .nav-link.active:hover {
+  transform: translateX(4px);
+}
+
+/* Indicator tracks active item hover */
+.app-sidebar .nav-pills:has(.nav-link.active:hover) .sidebar-nav-indicator {
+  transform: translate3d(4px, var(--indicator-top, 0), 0) !important;
+  transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.app-sidebar .nav-link .badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  min-width: 22px;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background-color: #ef4444 !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bottom-left user area — same card design, only spacing/border/background refined */
+.sidebar-user-card {
+  margin-top: auto;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.035) inset;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.sidebar-user-card:hover {
+  background: rgba(255, 255, 255, 0.065);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.sidebar-user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.sidebar-user-greeting {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+.sidebar-user-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.3;
+  margin-top: 1px;
+}
+
+.sidebar-logout-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.sidebar-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.sidebar-logout-btn:active {
+  background: rgba(239, 68, 68, 0.22);
+}
+
+/* Main content wrapper */
+.app-main-wrapper {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+/* ===== Top header ===== */
+.app-topbar {
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--topbar-border);
+  height: 60px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  z-index: 100;
+}
+
+.topbar-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid var(--topbar-border);
+  background: #ffffff;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.topbar-toggle-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.topbar-brand-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #334155;
+}
+
+/* Header account dropdown */
+.header-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid transparent;
+  padding: 5px 10px 5px 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.header-profile-btn:hover {
+  background: #f8fafc;
+  border-color: var(--topbar-border);
+}
+
+/* Chevron feedback while the account menu is open */
+.header-profile-btn > svg {
+  transition: transform 0.18s ease, color 0.15s ease;
+}
+
+.header-profile-btn[aria-expanded='true'] > svg {
+  transform: rotate(180deg);
+  color: var(--brand-blue, #2563eb);
+}
+
+.header-profile-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.dash-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  font-size: 0.85rem;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.dash-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.header-profile-btn:hover .dash-avatar {
+  filter: brightness(1.06);
+  transform: scale(1.03);
+}
+
+.header-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 16px 36px rgba(15, 23, 42, 0.12);
+  padding: 6px;
+  z-index: 1100;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+
+.header-menu.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.header-menu-head {
+  padding: 10px 14px 10px;
+}
+
+.header-menu-brand {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+
+.header-menu-head small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.74rem;
+  color: #64748b;
+}
+
+.header-menu-divider {
+  height: 1px;
+  margin: 4px 6px;
+  background: #f1f5f9;
+}
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #334155;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.header-menu-item svg {
+  color: #64748b;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.header-menu-item:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.header-menu-item:hover svg {
+  color: var(--brand-blue);
+}
+
+.header-menu-item.header-menu-logout {
+  color: #ef4444;
+}
+
+.header-menu-item.header-menu-logout svg {
+  color: #ef4444;
+}
+
+.header-menu-item.header-menu-logout:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* Mobile & Tablet responsive drawer */
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px !important;
+    overflow-y: auto;
+    z-index: 1050;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s ease;
+  }
+  .app-sidebar.sidebar-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .app-sidebar.sidebar-hidden {
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* Desktop static rail */
+@media (min-width: 992px) {
+  .app-sidebar {
+    position: static;
+    transform: none;
+    visibility: visible;
+    transition: margin-left 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  }
+  .sidebar-backdrop {
+    display: none;
+  }
+  .app-sidebar.sidebar-hidden {
+    margin-left: -260px;
+    transform: translateX(-100%);
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar,
+  .app-sidebar .nav-link,
+  .app-sidebar .nav-link svg,
+  .sidebar-nav-indicator,
+  .header-menu,
+  .header-profile-btn,
+  .sidebar-logout-btn,
+  .topbar-toggle-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}

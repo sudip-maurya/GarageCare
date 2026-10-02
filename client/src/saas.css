@@ -1,0 +1,460 @@
+/* GarageCare Global SaaS Design System (2026). Loaded last. UI only. */
+:root {
+  --gc-blue: #2563eb;
+  --gc-blue-hover: #1d4ed8;
+  --gc-blue-soft: #eff6ff;
+  --gc-blue-border: #bfdbfe;
+  --gc-ink: #0f172a;
+  --gc-slate: #334155;
+  --gc-muted: #64748b;
+  --gc-faint: #94a3b8;
+  --gc-line: #e2e8f0;
+  --gc-line-soft: #eef2f7;
+  --gc-bg: #f6f8fb;
+  --gc-card: #ffffff;
+  --gc-green: #16a34a;
+  --gc-green-soft: #e7f6ec;
+  --gc-amber: #b45309;
+  --gc-amber-soft: #fef3c7;
+  --gc-red: #dc2626;
+  --gc-red-soft: #fee2e2;
+  --gc-sky: #0284c7;
+  --gc-sky-soft: #e0f2fe;
+  --gc-radius: 12px;
+  --gc-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 6px 16px rgba(15, 23, 42, 0.06);
+  --gc-btn-h: 40px;
+}
+html, body, #root { width: 100%; max-width: 100%; }
+html { overflow-x: clip; }
+body {
+  margin: 0;
+  background: var(--gc-bg);
+  color: var(--gc-ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+#root { min-height: 100svh; display: flex; flex-direction: column; text-align: left; box-sizing: border-box; }
+#root *, #root *::before, #root *::after { box-sizing: border-box; }
+#root img, #root svg, #root video { max-width: 100%; }
+.d-flex.vh-100.bg-light { overflow: hidden; background: var(--gc-bg) !important; }
+
+.app-sidebar {
+  flex-shrink: 0;
+  width: 260px !important;
+  min-width: 260px;
+  height: 100vh;
+  height: 100svh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.app-main-wrapper, .gc-main { flex: 1 1 auto; min-width: 0; width: 0; max-width: 100%; overflow-x: clip; display: flex; flex-direction: column; }
+/* The app shell scrolls inside .gc-content (the outer wrapper is vh-100 with
+   hidden overflow), so this is the element whose scrollbar toggles. Keeping the
+   gutter always reserved means a page that grows/shrinks never changes the
+   available width, so centred page content cannot shift horizontally. */
+.gc-content { flex: 1 1 auto; min-width: 0; width: 100%; max-width: 100%; overflow-x: clip; scrollbar-gutter: stable; }
+.app-brand { display: flex; align-items: center; gap: 10px; padding: 6px 4px 16px; }
+.gc-logo-mark {
+  width: 38px; height: 38px; border-radius: 11px;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+.gc-logo-text { min-width: 0; line-height: 1.2; }
+.app-brand h3 { font-size: 1.22rem !important; margin: 0 !important; }
+.sidebar-tagline { margin-top: 2px; }
+.app-sidebar .nav-pills { display: flex; flex-direction: column; gap: 3px; }
+.app-sidebar .nav-link { min-width: 0; border: 1px solid transparent; }
+.app-topbar { min-width: 0; flex-shrink: 0; min-height: 60px; height: 60px; gap: 12px; }
+.app-topbar > div { min-width: 0; }
+.topbar-brand-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-profile { flex-shrink: 0; min-width: 0; }
+.header-profile-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+.gc-page-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; text-align: left; }
+.gc-titles { min-width: 0; flex: 1 1 240px; }
+.gc-title {
+  position: relative;
+  padding-left: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--gc-ink, #0f172a);
+  margin: 0;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.gc-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--gc-blue, #2563eb);
+}
+.gc-subtitle { margin: 4px 0 0; font-size: 14px; font-weight: 400; color: var(--gc-muted, #64748b); line-height: 1.5; }
+.gc-page .btn, .app-main-wrapper .btn {
+  border-radius: 10px; font-weight: 600; font-size: 0.86rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  white-space: nowrap; max-width: 100%; min-height: var(--gc-btn-h);
+}
+.gc-page .btn-primary, .app-main-wrapper .btn-primary { background: var(--gc-blue); border-color: var(--gc-blue); box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25); }
+.gc-page .btn-primary:hover, .app-main-wrapper .btn-primary:hover { background: var(--gc-blue-hover); border-color: var(--gc-blue-hover); }
+.gc-page .btn-outline-secondary, .app-main-wrapper .btn-outline-secondary { border-color: var(--gc-line); color: var(--gc-slate); background: #fff; }
+.gc-page .btn-sm, .app-main-wrapper .btn-sm { min-height: 32px; border-radius: 8px; font-size: 0.78rem; padding: 5px 11px; }
+.gc-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 20px; align-items: stretch; }
+.gc-kpi {
+  position: relative;
+  background: var(--gc-card); border: 1px solid var(--gc-line); border-radius: 14px;
+  box-shadow: var(--gc-shadow); padding: 18px; min-width: 0; height: 100%;
+  display: flex; gap: 14px; align-items: flex-start; overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+}
+.gc-kpi::before {
+  content: ""; position: absolute; top: 0; left: 14px; right: 14px; height: 3px;
+  border-radius: 0 0 3px 3px; background: var(--gc-line-soft);
+  transition: background-color 0.22s ease;
+}
+.gc-kpi.tone-red::before { background: #f87171; }
+.gc-kpi.tone-green::before { background: #34d399; }
+.gc-kpi.tone-amber::before { background: #fbbf24; }
+.gc-kpi.tone-blue::before { background: #60a5fa; }
+.gc-kpi.tone-sky::before { background: #38bdf8; }
+@media (hover: hover) {
+  .gc-kpi:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06), 0 16px 32px rgba(15, 23, 42, 0.10); }
+  .gc-kpi.tone-red:hover { border-color: #f3b8b8; }
+  .gc-kpi.tone-green:hover { border-color: #a9dfbe; }
+  .gc-kpi.tone-amber:hover { border-color: #f5d78a; }
+  .gc-kpi.tone-blue:hover { border-color: #a9c4f5; }
+  .gc-kpi.tone-sky:hover { border-color: #a5e3fc; }
+  .gc-kpi:hover .gc-kpi-icon { transform: scale(1.05) translateY(-1px); }
+  .gc-kpi.tone-red:hover .gc-kpi-value { color: #b91c1c; }
+  .gc-kpi.tone-green:hover .gc-kpi-value { color: #15803d; }
+  .gc-kpi.tone-amber:hover .gc-kpi-value { color: #92400e; }
+  .gc-kpi.tone-blue:hover .gc-kpi-value { color: var(--gc-blue-hover); }
+  .gc-kpi.tone-sky:hover .gc-kpi-value { color: #0369a1; }
+}
+.gc-kpi-icon { width: 44px; height: 44px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.22s ease, background-color 0.22s ease, color 0.22s ease; }
+.gc-kpi-body { min-width: 0; flex: 1 1 auto; }
+.gc-kpi-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gc-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gc-kpi-value { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; color: var(--gc-ink); line-height: 1.25; margin: 3px 0 2px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; transition: color 0.22s ease; }
+.gc-kpi-sub { font-size: 0.78rem; color: var(--gc-muted); line-height: 1.5; }
+.gc-kpi.tone-red .gc-kpi-icon { background: var(--gc-red-soft); color: var(--gc-red); }
+.gc-kpi.tone-red .gc-kpi-value { color: var(--gc-red); }
+.gc-kpi.tone-green .gc-kpi-icon { background: var(--gc-green-soft); color: var(--gc-green); }
+.gc-kpi.tone-green .gc-kpi-value { color: var(--gc-green); }
+.gc-kpi.tone-amber .gc-kpi-icon { background: var(--gc-amber-soft); color: var(--gc-amber); }
+.gc-kpi.tone-amber .gc-kpi-value { color: var(--gc-amber); }
+.gc-kpi.tone-sky .gc-kpi-icon { background: var(--gc-sky-soft); color: var(--gc-sky); }
+.gc-kpi.tone-sky .gc-kpi-value { color: var(--gc-sky); }
+.gc-kpi.tone-blue .gc-kpi-icon { background: var(--gc-blue-soft); color: var(--gc-blue); }
+.gc-kpi.tone-blue .gc-kpi-value { color: var(--gc-blue-hover); }
+@media (prefers-reduced-motion: reduce) {
+  .gc-kpi, .gc-kpi::before, .gc-kpi-icon, .gc-kpi-value { transition: none; }
+  .gc-kpi:hover { transform: none; }
+  .gc-kpi:hover .gc-kpi-icon { transform: none; }
+}
+.gc-page .card.border-start, .app-main-wrapper .card.border-start { border-left: 1px solid var(--gc-line) !important; border-width: 1px !important; border-radius: var(--gc-radius) !important; box-shadow: var(--gc-shadow) !important; }
+.gc-page .card.border-4, .app-main-wrapper .card.border-4 { border-width: 1px !important; }
+.gc-page .card, .app-main-wrapper .card { border-color: var(--gc-line); border-radius: var(--gc-radius); min-width: 0; max-width: 100%; }
+.gc-tabs { display: flex; gap: 4px; flex-wrap: wrap; background: #eef2f7; border: 1px solid var(--gc-line); border-radius: 12px; padding: 4px; margin-bottom: 18px; max-width: 100%; }
+.gc-tabs .nav-link { border: 0; border-radius: 9px; color: var(--gc-muted) !important; font-size: 0.85rem; font-weight: 600; padding: 9px 14px; white-space: nowrap; background: transparent !important; }
+.gc-tabs .nav-link.active { background: #fff !important; color: var(--gc-ink) !important; font-weight: 700; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
+.gc-page ul.nav-tabs:not(.gc-tabs), .app-main-wrapper ul.nav-tabs:not(.gc-tabs) { border: 1px solid var(--gc-line); background: #eef2f7; border-radius: 12px; padding: 4px; gap: 4px; flex-wrap: wrap; }
+.gc-page ul.nav-tabs:not(.gc-tabs) .nav-link, .app-main-wrapper ul.nav-tabs:not(.gc-tabs) .nav-link { border: 0 !important; border-radius: 9px !important; color: var(--gc-muted) !important; font-weight: 600; font-size: 0.85rem; padding: 9px 14px; margin: 0 !important; }
+.gc-page ul.nav-tabs:not(.gc-tabs) .nav-link.active, .app-main-wrapper ul.nav-tabs:not(.gc-tabs) .nav-link.active { background: #fff !important; color: var(--gc-ink) !important; font-weight: 700 !important; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
+.gc-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #fff; border: 1px solid var(--gc-line); border-radius: var(--gc-radius) var(--gc-radius) 0 0; padding: 12px 14px; min-width: 0; }
+.gc-search { position: relative; flex: 1 1 240px; min-width: 0; max-width: 420px; }
+.gc-search > svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gc-faint); pointer-events: none; }
+.gc-search input { width: 100%; height: var(--gc-btn-h); border: 1px solid var(--gc-line); border-radius: 10px; padding: 0 12px 0 36px; font-size: 0.86rem; color: var(--gc-ink); outline: none; min-width: 0; }
+.gc-search input:focus, .gc-toolbar .form-select:focus { border-color: var(--gc-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+.gc-toolbar .form-select { height: var(--gc-btn-h); border-radius: 10px; font-size: 0.85rem; width: auto; max-width: 100%; min-width: 0; }
+.gc-seg { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; background: #f1f5f9; border: 1px solid var(--gc-line); border-radius: 10px; padding: 3px; min-width: 0; max-width: 100%; }
+.gc-seg .btn { border: 0 !important; background: transparent !important; color: var(--gc-muted) !important; box-shadow: none !important; min-height: 32px; border-radius: 7px !important; padding: 5px 12px; font-size: 0.78rem; font-weight: 600; }
+.gc-seg .btn.btn-primary { background: #fff !important; color: var(--gc-ink) !important; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14) !important; font-weight: 700; }
+.gc-table-card { background: #fff; border: 1px solid var(--gc-line); border-radius: var(--gc-radius); box-shadow: var(--gc-shadow); overflow: hidden; min-width: 0; max-width: 100%; }
+.gc-table-scroll { overflow-x: auto; max-width: 100%; }
+.gc-table-scroll table { min-width: 860px; width: 100%; margin: 0; }
+.gc-table-scroll.gc-wide table { min-width: 1020px; }
+.gc-page table.table, .app-main-wrapper table.table { margin-bottom: 0; font-size: 0.86rem; }
+.gc-page .table thead th, .app-main-wrapper .table thead th { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--gc-muted); background: #f6f8fb !important; border-bottom: 1px solid var(--gc-line-soft) !important; padding: 10px 12px; white-space: nowrap; vertical-align: middle; }
+.gc-page .table tbody td, .app-main-wrapper .table tbody td { padding: 11px 12px; vertical-align: middle; color: var(--gc-slate); border-color: var(--gc-line-soft); overflow-wrap: anywhere; }
+.gc-page .table tbody tr:hover, .app-main-wrapper .table tbody tr:hover { background: #f4f8fd; }
+.gc-page .table .text-end, .app-main-wrapper .table .text-end { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gc-page td .d-flex.justify-content-center, .app-main-wrapper td .d-flex.justify-content-center { flex-wrap: wrap; row-gap: 6px; }
+.gc-page table.table a, .app-main-wrapper table.table a { color: var(--gc-blue); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.gc-page .badge.bg-success, .app-main-wrapper .badge.bg-success { background: var(--gc-green-soft) !important; color: #15803d !important; font-weight: 700; border: 1px solid #bbf7d0; }
+.gc-page .badge.bg-danger, .app-main-wrapper .badge.bg-danger { background: var(--gc-red-soft) !important; color: var(--gc-red) !important; font-weight: 700; border: 1px solid #fecaca; }
+.gc-page .badge.bg-warning, .app-main-wrapper .badge.bg-warning { background: var(--gc-amber-soft) !important; color: var(--gc-amber) !important; font-weight: 700; border: 1px solid #fde68a; }
+.gc-page .badge.bg-info, .app-main-wrapper .badge.bg-info { background: var(--gc-sky-soft) !important; color: var(--gc-sky) !important; font-weight: 700; border: 1px solid #bae6fd; }
+.gc-page .badge.bg-primary, .app-main-wrapper .badge.bg-primary { background: var(--gc-blue-soft) !important; color: var(--gc-blue-hover) !important; font-weight: 700; border: 1px solid var(--gc-blue-border); }
+.gc-page .badge.bg-secondary, .app-main-wrapper .badge.bg-secondary { background: #f1f5f9 !important; color: #475569 !important; font-weight: 700; border: 1px solid #e2e8f0; }
+.gc-page .badge, .app-main-wrapper .badge { border-radius: 999px; padding: 4px 11px; font-size: 0.72rem; white-space: nowrap; }
+.app-sidebar .badge.bg-danger { background: #ef4444 !important; color: #fff !important; border: 0; }
+.gc-page .form-control, .gc-page .form-select, .app-main-wrapper .form-control, .app-main-wrapper .form-select { border-radius: 10px; border-color: var(--gc-line); font-size: 0.87rem; min-width: 0; max-width: 100%; }
+.gc-page .form-control:focus, .gc-page .form-select:focus, .app-main-wrapper .form-control:focus, .app-main-wrapper .form-select:focus { border-color: var(--gc-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+.modal-dialog { max-width: min(560px, calc(100vw - 2rem)); }
+.modal-lg { max-width: min(800px, calc(100vw - 2rem)); }
+.modal-content { border-radius: 14px; border: 1px solid var(--gc-line); overflow: hidden; }
+.modal-header, .modal-footer { flex-wrap: wrap; gap: 10px; }
+.gc-page .alert, .app-main-wrapper .alert { border-radius: 10px; font-size: 0.85rem; overflow-wrap: anywhere; }
+.gc-page .row, .app-main-wrapper .row { --bs-gutter-x: 0.9rem; }
+.gc-page .card .table-responsive, .app-main-wrapper .card .table-responsive { overflow-x: auto; max-width: 100%; }
+.gc-page .card .table-responsive table, .app-main-wrapper .card .table-responsive table { min-width: 760px; width: 100%; }
+.gc-page .btn-group, .app-main-wrapper .btn-group { flex-wrap: wrap; max-width: 100%; }
+.gc-page td, .gc-page th, .app-main-wrapper td, .app-main-wrapper th { overflow-wrap: anywhere; }
+.gc-page .card.bg-danger, .gc-page .card.bg-warning, .gc-page .card.bg-primary, .gc-page .card.bg-success, .gc-page .card.bg-secondary, .gc-page .card.bg-info { background: #fff !important; color: var(--gc-ink) !important; border: 1px solid var(--gc-line) !important; box-shadow: var(--gc-shadow) !important; }
+.gc-page .card.bg-danger h3, .gc-page .card.bg-warning h3, .gc-page .card.bg-primary h3, .gc-page .card.bg-success h3, .gc-page .card.bg-secondary h3, .gc-page .card.bg-info h3 { color: var(--gc-ink) !important; }
+.gc-page .card.bg-danger h6, .gc-page .card.bg-warning h6, .gc-page .card.bg-primary h6, .gc-page .card.bg-success h6, .gc-page .card.bg-secondary h6, .gc-page .card.bg-info h6 { color: var(--gc-muted) !important; }
+.gc-page .card.bg-danger small, .gc-page .card.bg-warning small, .gc-page .card.bg-primary small, .gc-page .card.bg-success small, .gc-page .card.bg-secondary small, .gc-page .card.bg-info small { color: var(--gc-muted) !important; }
+.gc-page .card.bg-danger svg { color: var(--gc-red) !important; opacity: 1 !important; }
+.gc-page .card.bg-warning svg { color: var(--gc-amber) !important; opacity: 1 !important; }
+.gc-page .card.bg-primary svg { color: var(--gc-blue) !important; opacity: 1 !important; }
+.gc-page .card.bg-success svg { color: var(--gc-green) !important; opacity: 1 !important; }
+.gc-page .btn-group.btn-group-sm .btn, .app-main-wrapper .btn-group.btn-group-sm .btn { border-radius: 7px !important; font-size: 0.78rem; }
+.gc-page .nav-pills.nav-fill, .app-main-wrapper .nav-pills.nav-fill { background: #eef2f7; border: 1px solid var(--gc-line); border-radius: 12px; padding: 4px; }
+.gc-page .nav-pills.nav-fill .nav-link, .app-main-wrapper .nav-pills.nav-fill .nav-link { border-radius: 9px; color: var(--gc-muted); font-weight: 600; font-size: 0.85rem; }
+.gc-page .nav-pills.nav-fill .nav-link.active, .app-main-wrapper .nav-pills.nav-fill .nav-link.active { background: #fff !important; color: var(--gc-ink) !important; font-weight: 700; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
+@media (max-width: 1400px) { .gc-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1024px) { .gc-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .gc-kpis { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .gc-kpi { padding: 16px; }
+  .gc-kpi-value { font-size: 1.35rem; }
+  .gc-title { font-size: 1.3rem; }
+  .gc-search { max-width: none; flex-basis: 100%; }
+}
+.gc-head-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+/* Payments: modern SaaS payment-account dropdown */
+.gc-acct { position: relative; flex: 0 1 230px; min-width: 0; max-width: 100%; }
+.gc-acct-btn { display: flex; align-items: center; gap: 10px; width: 100%; height: var(--gc-btn-h); padding: 0 10px 0 8px; background: #fff; border: 1px solid var(--gc-line); border-radius: 10px; cursor: pointer; text-align: left; min-width: 0; font-size: 0.85rem; color: var(--gc-ink); }
+.gc-acct-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
+.gc-acct-btn.open { border-color: var(--gc-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+.gc-acct-icon { width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--gc-blue-soft); color: var(--gc-blue); }
+.gc-acct-text { flex: 1 1 auto; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+.gc-acct-sub { display: block; font-size: 0.68rem; font-weight: 500; color: var(--gc-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gc-acct-chev { color: var(--gc-faint); flex-shrink: 0; }
+.gc-acct-chev.open { transform: rotate(180deg); color: var(--gc-blue); }
+.gc-acct-menu { position: absolute; top: calc(100% + 6px); left: 0; width: 100%; min-width: 230px; max-height: 264px; overflow-y: auto; background: #fff; border: 1px solid var(--gc-line); border-radius: 12px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 16px 36px rgba(15, 23, 42, 0.12); padding: 6px; z-index: 60; }
+.gc-acct-menu.up { top: auto; bottom: calc(100% + 6px); }
+.gc-acct-opt { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; text-align: left; min-width: 0; }
+.gc-acct-opt:hover { background: #f8fafc; }
+.gc-acct-opt.selected { background: var(--gc-blue-soft); }
+.gc-acct-opt-icon { width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: #f1f5f9; color: var(--gc-slate); }
+.gc-acct-opt.selected .gc-acct-opt-icon { background: #fff; color: var(--gc-blue); }
+.gc-acct-opt-text { flex: 1 1 auto; min-width: 0; font-size: 0.84rem; font-weight: 600; color: var(--gc-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.25; }
+.gc-acct-opt-text small { display: block; font-size: 0.7rem; font-weight: 500; color: var(--gc-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gc-acct-check { color: var(--gc-blue); flex-shrink: 0; }
+/* Payments: compact icon-only actions */
+.gc-actions { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+.gc-act { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--gc-line); background: #fff; color: var(--gc-slate); cursor: pointer; flex-shrink: 0; text-decoration: none; }
+.gc-act:hover { background: #f1f5f9; border-color: #cbd5e1; color: var(--gc-ink); }
+.gc-act-primary { background: var(--gc-blue-soft); border-color: var(--gc-blue-border); color: var(--gc-blue); }
+.gc-act-primary:hover { background: #dbeafe; border-color: #93c5fd; color: var(--gc-blue-hover); }
+.gc-actions-cell { white-space: nowrap; }
+.gc-table-card.gc-outstanding:has(.gc-acct-menu) { overflow: visible; }
+.gc-table-card.gc-outstanding:has(.gc-acct-menu) .gc-toolbar { border-radius: var(--gc-radius) var(--gc-radius) 0 0; }
+.gc-table-scroll.gc-wide table { min-width: 980px; }
+
+/* ============================================================
+   GarageCare shared DROPDOWN design system.
+   One pattern for every dropdown in the app: the same trigger,
+   chevron, radius, shadow, hover/selected/focus states and the
+   same quick 180ms fade + slide + scale pop-in motion.
+   ============================================================ */
+:root {
+  --gc-sel-radius: 10px;
+  --gc-menu-radius: 12px;
+  --gc-menu-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 16px 36px rgba(15, 23, 42, 0.12);
+  --gc-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+/* Shared dropdown motion: quick fade + slight slide + small scale.
+   Anchored (absolute/portal) menus only, so opening never reflows the page. */
+@keyframes gcPopIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes gcPopInUp {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- Shared trigger (GcSelect buttons) ---------- */
+button.gc-sel-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: var(--gc-btn-h);
+  padding-right: 12px;
+  margin: 0;
+  background-image: none;
+  font-family: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+button.gc-sel-btn:hover:not(:disabled):not(:focus) { border-color: #cbd5e1; }
+button.gc-sel-btn:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+button.gc-sel-btn:focus, button.gc-sel-btn:focus-visible { outline: none; }
+/* Two stacked spans: the cell is as wide as the longest option, so the
+   trigger keeps the exact stable width the native <select> had. */
+.gc-sel-value {
+  flex: 1 1 auto;
+  display: inline-grid;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gc-sel-value-text,
+.gc-sel-value-widest {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gc-sel-value-widest { visibility: hidden; }
+.gc-sel-chev {
+  flex: 0 0 auto;
+  color: var(--gc-faint);
+  transition: transform 0.18s ease, color 0.15s ease;
+}
+button.gc-sel-btn:hover:not(:disabled) .gc-sel-chev { color: var(--gc-slate); }
+button.gc-sel-btn:disabled .gc-sel-chev { color: #b6c2d2; }
+.gc-sel-chev.is-open { transform: rotate(180deg); color: var(--gc-blue); }
+
+/* ---------- Shared menu + options ---------- */
+.gc-sel-menu {
+  z-index: 1080;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid var(--gc-line);
+  border-radius: var(--gc-menu-radius);
+  box-shadow: var(--gc-menu-shadow);
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: gcPopIn 0.18s ease-out;
+}
+.gc-sel-menu.up { animation-name: gcPopInUp; }
+.gc-sel-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--gc-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.13s ease, color 0.13s ease;
+}
+.gc-sel-opt-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.gc-sel-opt-check { flex: 0 0 auto; color: var(--gc-blue); }
+@media (hover: hover) {
+  .gc-sel-opt:hover { background: #f1f5f9; }
+}
+.gc-sel-opt:focus-visible { outline: none; background: #f1f5f9; box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.35); }
+.gc-sel-opt:active { background: #e8eef7; }
+.gc-sel-opt.is-selected,
+.gc-sel-opt.is-selected:hover { background: var(--gc-blue-soft); color: var(--gc-blue-hover); font-weight: 600; }
+
+/* ---------- Native <select> polish ----------
+   Form selects keep the native control (values, required-validation and
+   submission stay untouched) but share the same GarageCare surface:
+   lucide chevron, subtle border, hover, blue focus ring and a readable
+   disabled state. */
+.gc-page .form-select:not(.asm-select):not(.vh-native-required),
+.app-main-wrapper .form-select:not(.asm-select):not(.vh-native-required) {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: var(--gc-chevron);
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.gc-page .form-select:not(.asm-select):not(.vh-native-required):not(:focus):hover,
+.app-main-wrapper .form-select:not(.asm-select):not(.vh-native-required):not(:focus):hover {
+  border-color: #cbd5e1;
+}
+.gc-page .form-select:not(.asm-select):not(.vh-native-required):focus,
+.app-main-wrapper .form-select:not(.asm-select):not(.vh-native-required):focus {
+  border-color: var(--gc-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.gc-page .form-select-sm:not(.asm-select):not(.vh-native-required),
+.app-main-wrapper .form-select-sm:not(.asm-select):not(.vh-native-required) {
+  padding-right: 24px;
+  background-position: right 8px center;
+  background-size: 15px;
+}
+.gc-page .form-select:disabled:not(.vh-native-required),
+.app-main-wrapper .form-select:disabled:not(.vh-native-required) {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+/* Readable option lists inside every dropdown surface. */
+.gc-page select:not(.vh-native-required) option,
+.app-main-wrapper select:not(.vh-native-required) option {
+  background-color: #fff;
+  color: var(--gc-ink);
+}
+select:disabled:not(.vh-native-required) { cursor: not-allowed; }
+
+/* ---------- Payments account dropdown: shared pop-in motion ---------- */
+.gc-acct-menu {
+  transform-origin: top center;
+  animation: gcPopIn 0.18s ease-out;
+}
+.gc-acct-menu.up {
+  transform-origin: bottom center;
+  animation-name: gcPopInUp;
+}
+
+/* ---------- Reduced motion: keep the app calm ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gc-sel-menu,
+  .gc-acct-menu,
+  .vh-customer-menu,
+  .asm-date-popover,
+  .header-menu {
+    animation: none !important;
+  }
+  button.gc-sel-btn,
+  .gc-sel-chev,
+  .gc-sel-opt,
+  .header-menu {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 1200px) { .gc-acct { flex-basis: 200px; } }

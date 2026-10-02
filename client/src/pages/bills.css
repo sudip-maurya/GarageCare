@@ -1,0 +1,848 @@
+﻿/* ============================================================
+   Bills & Invoices Page â€” Modern SaaS UI (GarageCare Dashboard Theme)
+   Same visual language as the upgraded Vehicles & Services pages.
+   Scoped with the `bl-` prefix so nothing else is affected.
+   ============================================================ */
+
+.bl-page {
+  --bl-blue: #2563eb;
+  --bl-blue-hover: #1d4ed8;
+  --bl-blue-soft: #eff6ff;
+  --bl-blue-border: #bfdbfe;
+  --bl-green: #15803d;
+  --bl-green-soft: #ecfdf5;
+  --bl-green-border: #a7f3d0;
+  --bl-teal: #0d9488;
+  --bl-amber: #b45309;
+  --bl-amber-soft: #fffbeb;
+  --bl-amber-border: #fde68a;
+  --bl-red: #dc3545;
+  --bl-red-soft: #fdeaea;
+  --bl-red-border: #f5c6cb;
+  --bl-border: #e2e8f0;
+  --bl-border-light: #f1f5f9;
+  --bl-text-main: #0f172a;
+  --bl-text-secondary: #334155;
+  --bl-muted: #64748b;
+  --bl-card-bg: #ffffff;
+  --bl-card-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 10px 30px rgba(15, 23, 42, 0.05);
+
+  color: var(--bl-text-main);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* ---------- 1. Page Header ---------- */
+.bl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.bl-header-titles {
+  min-width: 0;
+}
+
+.bl-title {
+  position: relative;
+  padding-left: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--bl-text-main);
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Accent bar beside the title (same height/placement as the Services page) */
+.bl-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--bl-blue);
+}
+
+.bl-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--bl-muted);
+  line-height: 1.5;
+}
+
+.bl-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- 2. Modern Search Control ---------- */
+.bl-search {
+  position: relative;
+  width: 320px;
+}
+
+.bl-search > svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
+.bl-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 40px;
+  border: 1px solid var(--bl-border);
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: var(--bl-text-main);
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.bl-search input::placeholder {
+  color: #94a3b8;
+}
+
+.bl-search:hover input {
+  border-color: #cbd5e1;
+}
+
+.bl-search input:focus {
+  border-color: var(--bl-blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.bl-search:focus-within > svg {
+  color: var(--bl-blue);
+}
+
+/* ---------- 3. Generate Bill Button ---------- */
+.bl-generate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid var(--bl-blue);
+  background: var(--bl-blue);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bl-generate-btn:hover {
+  background: var(--bl-blue-hover);
+  border-color: var(--bl-blue-hover);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.bl-generate-btn:active {
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.bl-generate-btn:focus-visible {
+  outline: 2px solid var(--bl-blue-hover);
+  outline-offset: 2px;
+}
+
+/* ---------- 4. Feedback message ---------- */
+.bl-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 10px;
+  border-width: 1px;
+  padding: 12px 3rem 12px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.bl-alert .btn-close {
+  padding: 0.8rem 1rem;
+}
+
+/* ---------- 4b. Summary cards ---------- */
+/* The page reuses the shared KPI card system (the same cards as the Payments page),
+   but without the vertical lift on hover: nothing here moves or changes size. */
+.bl-page .gc-kpi {
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.bl-page .gc-kpi:hover {
+  transform: none;
+}
+
+.bl-page .gc-kpi:hover .gc-kpi-icon {
+  transform: none;
+}
+
+/* ---------- 4c. Table toolbar (status filter + date + sort) ---------- */
+.bl-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--bl-border);
+  background: #ffffff;
+}
+
+/* Segmented status filter: grey track with a white active pill, matching the app's
+   tab bars. Active and inactive buttons keep the same font-weight, so switching a
+   filter never changes a button's width. */
+.bl-seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: #f1f5f9;
+  border: 1px solid var(--bl-border);
+  border-radius: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.bl-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--bl-muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bl-seg-btn:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--bl-text-main);
+}
+
+.bl-seg-btn.is-active {
+  background: #ffffff;
+  color: var(--bl-blue);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+.bl-seg-btn:focus-visible {
+  outline: 2px solid var(--bl-blue);
+  outline-offset: 1px;
+}
+
+.bl-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.bl-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.bl-select-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.bl-select {
+  height: 40px;
+  padding: 0 30px 0 36px;
+  border: 1px solid var(--bl-border);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--bl-text-main);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bl-select:hover {
+  border-color: #cbd5e1;
+}
+
+.bl-select:focus {
+  border-color: var(--bl-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+/* ---------- 5. Bills Data-Card / Table ---------- */
+.bl-table-card {
+  background: var(--bl-card-bg);
+  border: 1px solid var(--bl-border);
+  border-radius: 12px;
+  box-shadow: var(--bl-card-shadow);
+  overflow: hidden;
+}
+
+.bl-table-wrapper {
+  width: 100%;
+  /* Data completeness wins over fitting the card: if a viewport is genuinely too
+     narrow, the table scrolls sideways instead of clipping any value. */
+  overflow-x: auto;
+  /* Long lists scroll inside the card, which is what lets the header row below stay
+     sticky. `scrollbar-gutter: stable` keeps the inline gutter permanently reserved,
+     so a scrollbar appearing or disappearing can never reflow the columns. */
+  max-height: max(420px, calc(100vh - 300px));
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bl-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  /* Content-driven columns: every column is at least as wide as its widest value,
+     so Bill No., Customer, Vehicle, amounts and Status are never squeezed. */
+  table-layout: auto;
+}
+
+/* Column share of the available width on large screens. Auto layout treats these
+   as hints only - the content width always stays the hard minimum.
+   Balance: Vehicle is sized to hug the number so Total Amount sits right next to
+   it, the money/status/action columns keep their existing share, and every pixel
+   recovered from Vehicle/Bill No./Date/Status goes to Customer. */
+.bl-table .bl-col-no { width: 9%; }
+.bl-table .bl-col-date { width: 6.5%; }
+.bl-table .bl-col-customer { width: 25%; }
+.bl-table .bl-col-vehicle { width: 8%; }
+.bl-table .bl-col-amount { width: 8.5%; }
+.bl-table .bl-col-status { width: 9%; }
+.bl-table .bl-col-actions { width: 17%; }
+
+/* Symmetric insets on the outer columns: the first heading lines up with the
+   first cell, and the "Actions" heading sits on exactly the same centre line
+   as the button group underneath it. */
+.bl-table thead th:first-child {
+  padding-left: 12px;
+}
+
+.bl-table thead th:last-child {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* Header row â€” quiet, uppercase, modern.
+   Headers may wrap onto a second line when space is tight, which keeps the
+   data cells (always single-line) from forcing the table wider than the page. */
+.bl-table thead th {
+  background: #f8fafc;
+  color: var(--bl-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--bl-border);
+  vertical-align: middle;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Sticky heading row: keeps Bill No. / Customer / Amount visible while a long list
+   scrolls inside the card. The inset shadow replaces the collapsed bottom border,
+   which some browsers drop once a table cell becomes sticky. */
+.bl-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: inset 0 -1px 0 var(--bl-border);
+}
+
+.bl-table thead th.bl-th-right {
+  text-align: right;
+}
+
+.bl-table thead th.bl-th-center {
+  text-align: center;
+}
+
+/* Body rows â€” generous vertical rhythm, subtle separation */
+.bl-table tbody td {
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--bl-border-light);
+  vertical-align: middle;
+  text-align: left;
+  font-size: 0.875rem;
+  color: var(--bl-text-main);
+  /* One compact line per cell. Columns grow to fit their content and no
+     `overflow: hidden` is used, so values can never overlap or be cut off. */
+  white-space: nowrap;
+}
+
+/* Keep the first cell's text aligned with the "Bill No." heading above it. */
+.bl-table tbody td:first-child {
+  padding-left: 12px;
+}
+
+.bl-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.bl-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.bl-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Cell alignment helpers â€” scoped to the bill table so they win over the base td rule */
+.bl-table tbody td.bl-td-right {
+  text-align: right;
+}
+
+.bl-table tbody td.bl-td-center {
+  text-align: center;
+}
+
+/* ---------- Bill No. (prominent but compact) ---------- */
+.bl-bill-no {
+  display: inline-block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--bl-blue);
+  white-space: nowrap;
+}
+
+/* ---------- Date (secondary hierarchy) ---------- */
+.bl-date {
+  display: inline-block;
+  color: var(--bl-muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* ---------- Customer (name / phone hierarchy) ---------- */
+/* Name and phone each stay on a single line and are never truncated, so the full
+   customer details (e.g. "Sudip Maurya" / "9869717008") are always readable. */
+.bl-customer-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--bl-text-main);
+  line-height: 1.35;
+  /* Never truncated and never wrapped: the column is always wide enough. */
+  white-space: nowrap;
+}
+
+.bl-customer-phone {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--bl-muted);
+  white-space: nowrap;
+}
+
+/* ---------- Vehicle number badge ---------- */
+.bl-vehicle-no {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid var(--bl-border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--bl-text-main);
+  white-space: nowrap;
+}
+
+/* ---------- Amounts ---------- */
+.bl-amount {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bl-text-main);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.bl-amount-paid {
+  color: var(--bl-green);
+}
+
+.bl-amount-due {
+  font-weight: 700;
+  color: var(--bl-red);
+}
+
+.bl-amount-zero {
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* ---------- 6. Status Pills ---------- */
+.bl-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.bl-status svg {
+  flex-shrink: 0;
+}
+
+/* Completed payment */
+.bl-status-paid {
+  background: var(--bl-green-soft);
+  border-color: var(--bl-green-border);
+  color: var(--bl-green);
+}
+
+/* Payment still pending / partially settled */
+.bl-status-partial {
+  background: var(--bl-amber-soft);
+  border-color: var(--bl-amber-border);
+  color: var(--bl-amber);
+}
+
+/* Unpaid */
+.bl-status-unpaid {
+  background: var(--bl-red-soft);
+  border-color: var(--bl-red-border);
+  color: var(--bl-red);
+}
+
+/* ---------- 7. Row Actions (compact, centered on the Actions column) ---------- */
+.bl-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Equal, minimal spacing between every action button - no gaps or overlap. */
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.bl-table tbody td.bl-td-actions {
+  /* Symmetric insets, identical to the "Actions" header cell, so the button
+     group and the heading resolve to exactly the same horizontal centre. */
+  padding-left: 12px;
+  padding-right: 12px;
+  white-space: nowrap;
+}
+
+/* Base button â€” used by the labelled primary action and the icon-only buttons */
+.bl-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--bl-border);
+  background: #ffffff;
+  color: var(--bl-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Icon-only variant - equal 32x32 square buttons, so the spacing between the
+   Edit / View / Share / Reminder icons is identical everywhere. */
+.bl-action-btn.bl-action-icon {
+  width: 32px;
+  min-width: 32px;
+  padding: 0;
+}
+
+.bl-action-btn svg {
+  color: #64748b;
+  transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.bl-action-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: var(--bl-text-main);
+}
+
+.bl-action-btn:hover svg {
+  color: var(--bl-text-secondary);
+}
+
+.bl-action-btn:focus-visible {
+  outline: 2px solid var(--bl-blue);
+  outline-offset: 1px;
+}
+
+/* Update Payment â€” primary emphasis */
+.bl-action-primary {
+  background: var(--bl-blue-soft);
+  border-color: var(--bl-blue-border);
+  color: var(--bl-blue);
+}
+
+.bl-action-primary svg {
+  color: var(--bl-blue);
+}
+
+.bl-action-primary:hover {
+  background: var(--bl-blue);
+  border-color: var(--bl-blue);
+  color: #ffffff;
+}
+
+.bl-action-primary:hover svg {
+  color: #ffffff;
+}
+
+/* Share â€” WhatsApp / success emphasis */
+.bl-action-success {
+  background: var(--bl-green-soft);
+  border-color: var(--bl-green-border);
+  color: var(--bl-green);
+}
+
+.bl-action-success svg {
+  color: var(--bl-green);
+}
+
+.bl-action-success:hover {
+  background: #ffffff;
+  border-color: var(--bl-green);
+  color: var(--bl-green);
+}
+
+/* Reminder â€” outstanding payment emphasis */
+.bl-action-warn {
+  background: var(--bl-amber-soft);
+  border-color: var(--bl-amber-border);
+  color: var(--bl-amber);
+}
+
+.bl-action-warn svg {
+  color: var(--bl-amber);
+}
+
+.bl-action-warn:hover {
+  background: #ffffff;
+  border-color: var(--bl-amber);
+  color: var(--bl-amber);
+}
+
+/* Fully paid bills: the Pay action stays in its place but is disabled, so the action
+   order and the width of the Actions column never change. */
+.bl-action-btn:disabled,
+.bl-action-btn:disabled:hover {
+  background: #ffffff;
+  border-color: var(--bl-border);
+  color: var(--bl-muted);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.bl-action-btn:disabled svg,
+.bl-action-btn:disabled:hover svg {
+  color: #94a3b8;
+}
+
+/* ---------- 8. Empty & Loading States ---------- */
+.bl-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--bl-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.bl-loading .spinner-border {
+  color: var(--bl-blue);
+}
+
+.bl-empty {
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.bl-empty-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  background: var(--bl-blue-soft);
+  color: var(--bl-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+.bl-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bl-text-main);
+  margin: 0 0 6px;
+}
+
+.bl-empty-text {
+  font-size: 13.5px;
+  color: var(--bl-muted);
+  margin: 0;
+}
+
+/* ---------- 9. Responsive Design ---------- */
+@media (max-width: 1080px) {
+  .bl-search {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bl-header {
+    gap: 14px;
+  }
+  .bl-title {
+    font-size: 23px;
+  }
+  .bl-header-actions {
+    width: 100%;
+  }
+  .bl-search {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 580px) {
+  .bl-header-actions {
+    flex-wrap: wrap;
+  }
+  .bl-search {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .bl-generate-btn {
+    width: 100%;
+  }
+  .bl-table tbody td {
+    padding: 12px 6px;
+  }
+  .bl-table thead th {
+    padding: 11px 6px;
+  }
+  /* Slightly tighter outer insets on phones - the columns themselves never shrink
+     below their content, the table simply scrolls if the screen is too narrow. */
+  .bl-table thead th:first-child,
+  .bl-table tbody td:first-child {
+    padding-left: 10px;
+  }
+  .bl-table thead th:last-child,
+  .bl-table tbody td.bl-td-actions {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .bl-generate-btn,
+  .bl-action-btn,
+  .bl-table tbody tr,
+  .bl-seg-btn,
+  .bl-select {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* Slim toolbar on small screens: the pills and dropdowns wrap onto their own rows
+   and, if a phone is genuinely too narrow, the pill row scrolls inside its own
+   rounded track so the page itself never gains a horizontal scrollbar. */
+@media (max-width: 768px) {
+  .bl-toolbar {
+    padding: 10px 12px;
+  }
+  .bl-toolbar-right {
+    width: 100%;
+    margin-left: 0;
+  }
+  .bl-select-wrap {
+    flex: 1 1 160px;
+  }
+  .bl-select {
+    width: 100%;
+  }
+  .bl-seg {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .bl-seg::-webkit-scrollbar {
+    display: none;
+  }
+  .bl-seg-btn {
+    flex: 1 0 auto;
+  }
+}

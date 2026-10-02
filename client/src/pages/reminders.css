@@ -1,0 +1,1029 @@
+/* ============================================================
+   GarageCare "Service & Policy Reminders" Page Styling
+   Scoped under .rem-page using GarageCare design tokens:
+   ============================================================ */
+
+.rem-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-width: 0;
+  text-align: left;
+
+  /* Stable layout metrics (see the tab + content-area rules below):
+     --rem-tab-w            fixed width for every filter tab, so the segmented
+                            control can never resize when the active tab changes
+     --rem-thead-h          pinned table header height, so the content-area maths
+                            below stays exact whatever the font renders like
+     --rem-hscroll-reserve  worst-case thickness of the horizontal scrollbar
+                            inside the table area (only shown on narrow screens,
+                            where the 6-column table cannot fit)
+     --rem-content-min-h    reserved height of the whole table area (header row
+                            included), taller than the empty/loading state and
+                            than a short result list, so the card height is
+                            identical for every filter and switching tabs can
+                            never move the page */
+  --rem-tab-w: 96px;
+  --rem-thead-h: 46px;
+  --rem-hscroll-reserve: 17px;
+  --rem-content-min-h: 430px;
+}
+
+/* 1. Page Header (Matches Insurance/Services header style) */
+.rem-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.rem-title {
+  position: relative;
+  padding-left: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--gc-ink, #0f172a);
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Small vertical blue accent line on the left */
+.rem-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--gc-blue, #2563eb);
+}
+
+.rem-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gc-muted, #64748b);
+  line-height: 1.5;
+  max-width: 760px;
+}
+
+.rem-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Sync Button with micro-rotation on hover */
+.rem-btn-sync {
+  background: #ffffff;
+  color: var(--gc-blue, #2563eb);
+  border: 1px solid var(--gc-blue-border, #bfdbfe);
+  border-radius: 11px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 9px 18px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rem-btn-sync .rem-sync-icon {
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rem-btn-sync:hover:not(:disabled) {
+  background: var(--gc-blue-soft, #eff6ff);
+  color: var(--gc-blue-hover, #1d4ed8);
+  border-color: var(--gc-blue, #2563eb);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px -10px rgba(37, 99, 235, 0.55);
+}
+
+.rem-btn-sync:focus-visible {
+  outline: none;
+  border-color: var(--gc-blue, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.22);
+}
+
+.rem-btn-sync:hover:not(:disabled) .rem-sync-icon {
+  transform: rotate(45deg);
+}
+
+.rem-btn-sync:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* 2. KPI Summary Cards (4 Cards Grid) */
+.rem-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.rem-kpi-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 18px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.03);
+  padding: 20px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+  font-family: inherit;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rem-kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--gc-line-soft, #eef2f7);
+  transition: background-color 220ms ease;
+}
+
+.rem-kpi-card.tone-danger::before { background: #f87171; }
+.rem-kpi-card.tone-warning::before { background: #fbbf24; }
+.rem-kpi-card.tone-primary::before { background: #60a5fa; }
+.rem-kpi-card.tone-success::before { background: #34d399; }
+
+@media (hover: hover) {
+  .rem-kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05), 0 14px 28px rgba(15, 23, 42, 0.08);
+  }
+  .rem-kpi-card.tone-danger:hover { border-color: #fca5a5; }
+  .rem-kpi-card.tone-warning:hover { border-color: #fde047; }
+  .rem-kpi-card.tone-primary:hover { border-color: #93c5fd; }
+  .rem-kpi-card.tone-success:hover { border-color: #86efac; }
+  .rem-kpi-card:hover .rem-kpi-icon {
+    transform: scale(1.05);
+  }
+}
+
+.rem-kpi-card:focus-visible {
+  outline: none;
+  border-color: var(--gc-blue, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.rem-kpi-card.is-active {
+  border-color: var(--gc-blue, #2563eb);
+  background: #fbfdff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.rem-kpi-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.rem-kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gc-muted, #64748b);
+  line-height: 1.3;
+}
+
+.rem-kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rem-kpi-card.tone-danger .rem-kpi-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.rem-kpi-card.tone-warning .rem-kpi-icon {
+  background: #fef3c7;
+  color: #b45309;
+}
+.rem-kpi-card.tone-primary .rem-kpi-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.rem-kpi-card.tone-success .rem-kpi-icon {
+  background: #e7f6ec;
+  color: #16a34a;
+}
+
+.rem-kpi-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--gc-ink, #0f172a);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+  transition: color 200ms ease;
+}
+
+.rem-kpi-card.tone-danger .rem-kpi-value { color: #dc2626; }
+.rem-kpi-card.tone-warning .rem-kpi-value { color: #b45309; }
+.rem-kpi-card.tone-primary .rem-kpi-value { color: #2563eb; }
+.rem-kpi-card.tone-success .rem-kpi-value { color: #16a34a; }
+
+/* 3. Modern SaaS Filter Bar / Toolbar */
+.rem-toolbar-card {
+  background: #ffffff;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.rem-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rem-type-seg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #f1f5f9;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 12px;
+  padding: 3px;
+  min-width: 0;
+  max-width: 100%;
+  flex-shrink: 0;
+  isolation: isolate;
+}
+
+/* Single shared blue "active" pill that slides between tabs */
+.rem-type-seg-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: 0;
+  z-index: 0;
+  border-radius: 9px;
+  background: var(--gc-blue, #2563eb);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.32);
+  transform: translateX(0);
+  pointer-events: none;
+  will-change: transform, width;
+  transition: transform 240ms cubic-bezier(0.4, 0, 0.2, 1),
+              width 240ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 160ms ease-out;
+}
+
+.rem-type-btn {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gc-muted, #64748b);
+  /* Fixed slot per tab: the control geometry never depends on the label text
+     or on which tab is active, so the pill only ever has to translate. */
+  flex: 0 0 auto;
+  width: var(--rem-tab-w, 96px);
+  padding: 6px 10px;
+  border-radius: 9px;
+  cursor: pointer;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.rem-type-btn:hover:not(.is-active) {
+  color: var(--gc-ink, #0f172a);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Active state is painted by the sliding pill, so the button stays transparent
+   and keeps the same font-weight as the others to avoid text reflow/jitter.
+   The colour change is delayed slightly so the label turns white only once the
+   pill has slid underneath it. */
+.rem-type-btn.is-active {
+  background: transparent;
+  color: #ffffff;
+  box-shadow: none;
+  transition: color 160ms ease 80ms;
+}
+
+.rem-type-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--gc-blue, #2563eb);
+}
+
+.rem-select-wrap {
+  position: relative;
+  min-width: 175px;
+  flex: 0 1 auto;
+}
+
+.rem-select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 0 32px 0 12px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--gc-ink, #0f172a);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.rem-select:hover {
+  border-color: #cbd5e1;
+}
+
+.rem-select:focus {
+  border-color: var(--gc-blue, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.rem-search-wrap {
+  position: relative;
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+
+.rem-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gc-faint, #94a3b8);
+  pointer-events: none;
+}
+
+.rem-search-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 11px;
+  padding: 0 34px 0 36px;
+  font-size: 0.85rem;
+  color: var(--gc-ink, #0f172a);
+  background: #ffffff;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.rem-search-input:hover {
+  border-color: #cbd5e1;
+}
+
+.rem-search-input:focus {
+  border-color: var(--gc-blue, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.rem-search-input::placeholder {
+  color: var(--gc-faint, #94a3b8);
+}
+
+.rem-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: var(--gc-faint, #94a3b8);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+/* 4. Reminder Table */
+.rem-table-card {
+  background: #ffffff;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 6px 18px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.rem-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  /* Reserved content area: the loading row, the empty state and short result
+     sets all occupy the same height, so the card (and the page) cannot resize
+     when the active filter changes. */
+  min-height: var(--rem-content-min-h, 430px);
+}
+
+.rem-table {
+  width: 100%;
+  min-width: 860px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.86rem;
+}
+
+.rem-table thead th {
+  height: var(--rem-thead-h, 46px);
+  font-size: 0.69rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gc-muted, #64748b);
+  background: #f8fafc;
+  border-bottom: 1px solid var(--gc-line, #e2e8f0);
+  padding: 13px 16px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.rem-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: var(--gc-slate, #334155);
+  border-bottom: 1px solid var(--gc-line-soft, #eef2f7);
+  background: #ffffff;
+  transition: background-color 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rem-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.rem-table tbody tr.rem-row:hover td {
+  background-color: #f6faff;
+}
+
+.rem-table tbody tr.rem-row.is-dismissed td {
+  opacity: 0.6;
+}
+
+.rem-veh-badge {
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  color: var(--gc-ink, #0f172a);
+}
+
+.rem-veh-desc {
+  font-size: 0.77rem;
+  color: var(--gc-muted, #64748b);
+  margin-top: 2px;
+}
+
+.rem-cust-name {
+  font-weight: 600;
+  color: var(--gc-ink, #0f172a);
+}
+
+.rem-cust-mobile {
+  font-size: 0.77rem;
+  color: var(--gc-muted, #64748b);
+  margin-top: 2px;
+}
+
+.rem-type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.rem-type-pill.type-service {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.rem-type-pill.type-insurance {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.rem-type-pill.type-payment {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.rem-outstanding-note {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-top: 4px;
+}
+
+.rem-date-str {
+  font-weight: 600;
+  color: var(--gc-ink, #0f172a);
+}
+
+.rem-due-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+.rem-due-badge.due-overdue {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.rem-due-badge.due-today {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde047;
+}
+
+.rem-due-badge.due-week {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.rem-due-badge.due-future {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.rem-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rem-status-badge.status-sent {
+  background: #e7f6ec;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.rem-status-badge.status-pending {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.rem-status-badge.status-dismissed {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.rem-status-badge.status-completed {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+/* 5. Empty, Loading & Refreshing States */
+/* Every state renders inside the table body so the column headers stay visible,
+   and each one reserves the same height (--rem-content-min-h) so switching
+   filters can never resize the card and therefore never moves the page. */
+.rem-table tbody td.rem-loading-cell,
+.rem-table tbody td.rem-empty-cell {
+  padding: 0;
+  border-bottom: 0;
+  background: #ffffff;
+}
+
+/* Loading and empty states share one reserved body height and identical
+   margins, so both are exactly the size of a short result list and neither can
+   shift the page. Body height = reserve − header row − margins − the possible
+   horizontal scrollbar of the table area. */
+.rem-loading-box,
+.rem-empty-box {
+  min-height: calc(
+    var(--rem-content-min-h, 430px) - var(--rem-thead-h, 46px) - 32px - var(--rem-hscroll-reserve, 17px)
+  );
+  margin: 16px;
+}
+
+.rem-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--gc-muted, #64748b);
+  font-size: 0.86rem;
+}
+
+/* A filter refetch keeps the previous rows on screen (so the area cannot
+   collapse) and dims them until the new data arrives. */
+.rem-table tbody {
+  transition: opacity 160ms ease;
+}
+
+.rem-table.is-updating tbody {
+  opacity: 0.6;
+}
+
+/* The empty/loading states should never react to the row hover highlight */
+.rem-table tbody tr.rem-empty-row:hover td,
+.rem-table tbody tr.rem-loading-row:hover td {
+  background-color: #ffffff;
+}
+
+.rem-empty-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, #fbfdff 0%, #ffffff 100%);
+  border: 1px solid var(--gc-line, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -24px rgba(15, 23, 42, 0.35);
+}
+
+.rem-empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--gc-blue-soft, #eff6ff);
+  color: var(--gc-blue, #2563eb);
+  border: 1px solid var(--gc-blue-border, #bfdbfe);
+  box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.06);
+  margin-bottom: 18px;
+}
+
+.rem-empty-title {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--gc-ink, #0f172a);
+}
+
+.rem-empty-desc {
+  margin: 0 auto 22px;
+  font-size: 0.86rem;
+  color: var(--gc-muted, #64748b);
+  max-width: 460px;
+  line-height: 1.6;
+}
+
+.rem-empty-cta {
+  background: var(--gc-blue, #2563eb);
+  color: #ffffff;
+  border: 1px solid var(--gc-blue, #2563eb);
+  border-radius: 11px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 9px 20px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
+  transition: background-color 220ms ease, border-color 220ms ease,
+              box-shadow 220ms ease, transform 220ms ease;
+}
+
+.rem-empty-cta:hover:not(:disabled) {
+  background: var(--gc-blue-hover, #1d4ed8);
+  border-color: var(--gc-blue-hover, #1d4ed8);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -8px rgba(37, 99, 235, 0.55);
+}
+
+.rem-empty-cta:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+.rem-empty-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.28);
+}
+
+.rem-empty-cta:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.rem-empty-cta .rem-sync-icon {
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rem-empty-cta:hover:not(:disabled) .rem-sync-icon {
+  transform: rotate(45deg);
+}
+
+/* 6. Responsive Adaptations */
+@media (max-width: 1200px) {
+  .rem-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .rem-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .rem-header-actions {
+    width: 100%;
+  }
+  .rem-btn-sync {
+    width: 100%;
+    justify-content: center;
+  }
+  .rem-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .rem-type-seg {
+    width: 100%;
+    justify-content: space-between;
+  }
+  /* On tablet/mobile the tabs flex to equal shares of the (fixed width) control,
+     so they stay equal-width and predictable without hard-coded widths. */
+  .rem-type-btn {
+    flex: 1 1 0;
+    width: auto;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+  }
+  .rem-select-wrap {
+    width: 100%;
+    min-width: 100%;
+  }
+  .rem-search-wrap {
+    width: 100%;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .rem-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .rem-header-titles {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .rem-header-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .rem-title {
+    font-size: 1.35rem;
+  }
+  /* Allow the segmented control to scroll instead of clipping tab labels */
+  .rem-type-seg {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .rem-type-seg::-webkit-scrollbar {
+    display: none;
+  }
+  .rem-type-btn {
+    flex: 1 1 0;
+    width: auto;
+    padding: 6px 8px;
+    font-size: 0.76rem;
+  }
+  .rem-empty-box {
+    /* Only the inner spacing tightens on phones; the reserved height and the
+       margins stay shared with the loading state so nothing can shift. */
+    padding: 28px 16px;
+  }
+  .rem-empty-icon-wrap {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 14px;
+  }
+  .rem-empty-desc {
+    margin-bottom: 16px;
+  }
+}
+
+/* 7. Accessibility (prefers-reduced-motion) */
+@media (prefers-reduced-motion: reduce) {
+  .rem-kpi-card,
+  .rem-btn-sync,
+  .rem-btn-sync .rem-sync-icon,
+  .rem-empty-cta .rem-sync-icon,
+  .rem-kpi-icon,
+  .rem-type-btn,
+  .rem-select,
+  .rem-search-input,
+  .rem-btn-wa,
+  .rem-act-btn,
+  .rem-empty-cta,
+  .rem-table tbody,
+  .rem-table tbody td {
+    transition: none !important;
+    transform: none !important;
+  }
+  /* The shared indicator still needs its transform to sit under the active tab */
+  .rem-type-seg-pill {
+    transition: none !important;
+  }
+  .rem-spin {
+    animation: none !important;
+  }
+}
+
+.rem-sent-date {
+  font-size: 0.7rem;
+  color: var(--gc-muted, #64748b);
+  margin-top: 3px;
+}
+
+.rem-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.rem-btn-wa {
+  background: #16a34a;
+  color: #ffffff;
+  border: 1px solid #16a34a;
+  border-radius: 9px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.28);
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rem-btn-wa:hover {
+  background: #15803d;
+  border-color: #15803d;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.35);
+}
+
+.rem-btn-wa:active {
+  transform: translateY(0);
+}
+
+.rem-act-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gc-line, #e2e8f0);
+  background: #ffffff;
+  color: var(--gc-muted, #64748b);
+  cursor: pointer;
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rem-act-btn:hover {
+  background: #f1f5f9;
+  color: var(--gc-ink, #0f172a);
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.rem-act-btn.act-danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.rem-act-btn.act-restore {
+  width: auto;
+  padding: 0 10px;
+  gap: 5px;
+  font-size: 0.77rem;
+  font-weight: 600;
+}
+
+.rem-act-btn.act-restore:hover {
+  background: var(--gc-blue-soft, #eff6ff);
+  color: var(--gc-blue, #2563eb);
+  border-color: var(--gc-blue-border, #bfdbfe);
+}
+
+.rem-search-clear:hover {
+  color: var(--gc-ink, #0f172a);
+  background: #f1f5f9;
+}
+
+.rem-kpi-card.tone-danger .rem-kpi-value { color: #dc2626; }
+.rem-kpi-card.tone-warning .rem-kpi-value { color: #b45309; }
+.rem-kpi-card.tone-primary .rem-kpi-value { color: #1d4ed8; }
+.rem-kpi-card.tone-success .rem-kpi-value { color: #15803d; }
+
+.rem-kpi-sub {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gc-muted, #64748b);
+  line-height: 1.4;
+}
+
+.rem-btn-sync:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@keyframes rem-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rem-spin {
+  animation: rem-spin 0.9s linear infinite;
+}

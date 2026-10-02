@@ -1,0 +1,1030 @@
+/* ============================================================
+   Services Page — Modern SaaS UI (GarageCare Dashboard Theme)
+   ============================================================ */
+
+.svc-page {
+  --svc-blue: #2563eb;
+  --svc-blue-hover: #1d4ed8;
+  --svc-blue-soft: #eff6ff;
+  --svc-blue-border: #bfdbfe;
+  --svc-green: #0d9488;
+  --svc-green-soft: #effcf9;
+  --svc-green-border: #99f6e4;
+  --svc-emerald: #1da77b;
+  --svc-emerald-soft: #ecfdf5;
+  --svc-emerald-border: #a7f3d0;
+  --svc-red: #dc3545;
+  --svc-red-soft: #fdeaea;
+  --svc-border: #e2e8f0;
+  --svc-border-light: #f1f5f9;
+  --svc-text-main: #0f172a;
+  --svc-text-secondary: #334155;
+  --svc-muted: #64748b;
+  --svc-card-bg: #ffffff;
+  --svc-card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --svc-hover-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+
+  color: var(--svc-text-main);
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* ---------- 1. Page Header ---------- */
+.svc-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.svc-title {
+  position: relative;
+  padding-left: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--svc-text-main);
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Subtle blue→green accent bar beside the title */
+.svc-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--svc-blue) 0%, var(--svc-green) 100%);
+}
+
+.svc-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--svc-muted);
+  line-height: 1.5;
+}
+
+.svc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Plain-text success note — no green box/border, auto-dismissed after 3s */
+.svc-success-note {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--svc-text-secondary);
+}
+
+/* Modern Search Box */
+.svc-search {
+  position: relative;
+  width: 290px;
+}
+
+.svc-search > svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
+.svc-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 40px;
+  border: 1px solid var(--svc-border);
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 14px;
+  color: var(--svc-text-main);
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.svc-search input::placeholder {
+  color: #94a3b8;
+}
+
+.svc-search input:focus {
+  border-color: var(--svc-blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.svc-search input:focus + svg,
+.svc-search:focus-within > svg {
+  color: var(--svc-blue);
+}
+
+/* Modern Add Service Button */
+.svc-add-btn {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background-color: var(--svc-blue) !important;
+  border: 1px solid var(--svc-blue) !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+  transition: all 0.18s ease;
+}
+
+.svc-add-btn:hover {
+  background-color: var(--svc-blue-hover) !important;
+  border-color: var(--svc-blue-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.svc-add-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+/* ---------- 2. Summary KPI Cards (4 equal-width cards in one row) ---------- */
+.svc-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.svc-stat {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid var(--svc-border, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.03);
+  padding: 18px 20px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  overflow: hidden;
+  min-height: 140px;
+  height: 100%;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Thin colored accent line across the TOP of each card */
+.svc-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--gc-line-soft, #eef2f7);
+  transition: background-color 220ms ease;
+}
+
+.svc-stat.tone-blue::before { background: #2563eb; }
+.svc-stat.tone-green::before { background: #16a34a; }
+.svc-stat.tone-purple::before { background: #7c3aed; }
+.svc-stat.tone-amber::before { background: #f59e0b; }
+
+@media (hover: hover) {
+  .svc-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05), 0 14px 28px rgba(15, 23, 42, 0.08);
+  }
+  .svc-stat.tone-blue:hover { border-color: #93c5fd; }
+  .svc-stat.tone-green:hover { border-color: #86efac; }
+  .svc-stat.tone-purple:hover { border-color: #c4b5fd; }
+  .svc-stat.tone-amber:hover { border-color: #fde68a; }
+  .svc-stat:hover .svc-stat-icon {
+    transform: scale(1.05);
+  }
+}
+
+/* Card Top: Small uppercase title at top-left, Small rounded icon box at top-right */
+.svc-stat-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.svc-stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gc-muted, #64748b);
+  line-height: 1.3;
+}
+
+/* Small rounded icon box at top-right with a very light tint of the card color */
+.svc-stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.svc-stat.tone-blue .svc-stat-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.svc-stat.tone-green .svc-stat-icon {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.svc-stat.tone-purple .svc-stat-icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.svc-stat.tone-amber .svc-stat-icon {
+  background: #fffbeb;
+  color: #f59e0b;
+}
+
+/* Card Body: Large bold number below title, Small muted description below number */
+.svc-stat-body {
+  min-width: 0;
+}
+
+.svc-stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+
+.svc-stat.tone-blue .svc-stat-value { color: #2563eb; }
+.svc-stat.tone-green .svc-stat-value { color: #16a34a; }
+.svc-stat.tone-purple .svc-stat-value { color: #7c3aed; }
+.svc-stat.tone-amber .svc-stat-value { color: #f59e0b; }
+
+.svc-stat-sub {
+  font-size: 0.8rem;
+  color: var(--gc-muted, #64748b);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- 3. Services Table ---------- */
+.svc-table-card {
+  background: var(--svc-card-bg);
+  border: 1px solid var(--svc-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 10px 30px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.svc-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svc-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 800px;
+}
+
+/* Table Header — clean, quiet, modern */
+.svc-table thead th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--svc-border);
+  vertical-align: middle;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Table Body Cells */
+.svc-table tbody td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--svc-border-light);
+  vertical-align: middle;
+  text-align: left;
+  font-size: 0.875rem;
+  color: var(--svc-text-main);
+}
+
+.svc-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Smooth Row Hover — very subtle interaction feedback */
+.svc-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.svc-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Date Column — secondary hierarchy */
+.svc-date {
+  display: inline-block;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* Vehicle Column — primary emphasis */
+.svc-vehicle-number {
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  color: var(--svc-text-main);
+  white-space: nowrap;
+}
+
+.svc-vehicle-model {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #334155;
+  margin-top: 3px;
+}
+
+/* Customer Column */
+.svc-customer {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--svc-text-main);
+}
+
+/* Actions: Modern View Button */
+.svc-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 8px;
+  border: 1px solid var(--svc-border);
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.svc-view-btn svg {
+  color: #64748b;
+  transition: color 0.15s ease;
+}
+
+.svc-view-btn:hover {
+  background: var(--svc-blue);
+  border-color: var(--svc-blue);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+}
+
+.svc-view-btn:hover svg {
+  color: #ffffff;
+}
+
+.svc-view-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Actions wrapper: View button + Delete icon */
+.svc-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Delete icon button — same square icon-button style as the Vehicles page */
+.svc-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--svc-border);
+  background: #ffffff;
+  color: var(--svc-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.svc-icon-btn:hover {
+  background: var(--svc-blue-soft);
+  border-color: var(--svc-blue-border);
+  color: var(--svc-blue);
+}
+
+.svc-icon-btn:focus-visible {
+  outline: 2px solid var(--svc-blue);
+  outline-offset: 1px;
+}
+
+.svc-icon-btn.svc-icon-danger {
+  color: var(--svc-red);
+}
+
+.svc-icon-btn.svc-icon-danger:hover {
+  background: var(--svc-red-soft);
+  border-color: #f5c6cb;
+  color: var(--svc-red);
+}
+
+/* ---------- 4. Empty & Loading States ---------- */
+.svc-empty {
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.svc-empty-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  background: var(--svc-blue-soft);
+  color: var(--svc-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+.svc-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--svc-text-main);
+  margin: 0 0 6px;
+}
+
+.svc-empty-text {
+  font-size: 13.5px;
+  color: var(--svc-muted);
+  margin: 0 0 20px;
+}
+
+.svc-loading {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--svc-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ---------- 5. Responsive Design ---------- */
+@media (max-width: 1080px) {
+  .svc-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .svc-title {
+    font-size: 23px;
+  }
+  .svc-header-actions {
+    width: 100%;
+  }
+  .svc-search {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 580px) {
+  .svc-stats {
+    grid-template-columns: 1fr;
+  }
+  .svc-header-actions {
+    flex-wrap: wrap;
+  }
+  .svc-search {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .svc-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .svc-stat,
+  .svc-stat-icon,
+  .svc-add-btn,
+  .svc-view-btn,
+  .svc-icon-btn,
+  .svc-table tbody tr {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   Add New Service Modal (asm-) — Modern SaaS Styling
+   ============================================================ */
+.asm-modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1055;
+  text-align: left;
+}
+
+.asm-modal .modal-dialog {
+  margin: 0;
+  width: 100%;
+  max-width: 720px;
+  text-align: left;
+}
+
+.asm-modal .modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 20px 48px -10px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: #ffffff;
+  text-align: left;
+}
+
+/* Modal Header */
+.asm-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--svc-border);
+  background: #ffffff;
+}
+
+.asm-head-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--svc-blue-soft);
+  color: var(--svc-blue);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.asm-head-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.asm-head-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--svc-text-main);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.asm-head-subtitle {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--svc-muted);
+}
+
+.asm-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.asm-close:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.asm-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Body */
+.asm-modal .modal-body {
+  padding: 24px;
+}
+
+.asm-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.asm-input {
+  height: 44px;
+  border: 1px solid var(--svc-border);
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 14px;
+  color: var(--svc-text-main);
+  padding: 0 14px;
+  box-shadow: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.asm-input::placeholder {
+  color: #94a3b8;
+}
+
+.asm-input:focus {
+  border-color: var(--svc-blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  outline: none;
+}
+
+.asm-input:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+.asm-readonly {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ---------- Service Date: typeable input + inline calendar picker ---------- */
+.asm-date-wrap {
+  position: relative;
+}
+
+.asm-date-wrap .asm-date {
+  padding-right: 44px;
+}
+
+.asm-date-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.asm-date-toggle:hover:not(:disabled) {
+  background: var(--svc-blue-soft);
+  color: var(--svc-blue);
+}
+
+.asm-date-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  width: 260px;
+  background: #ffffff;
+  border: 1px solid var(--svc-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+  padding: 10px;
+  transform-origin: top right;
+  animation: gcPopIn 0.18s ease-out;
+}
+
+.asm-date-pop-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.asm-date-pop-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--svc-text-main);
+}
+
+.asm-date-nav {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.asm-date-nav:hover {
+  background: #f1f5f9;
+  color: var(--svc-text-main);
+}
+
+.asm-date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.asm-date-dow {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--svc-muted);
+  text-align: center;
+  padding: 4px 0;
+}
+
+.asm-date-day {
+  height: 30px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--svc-text-secondary);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.asm-date-day:hover {
+  background: var(--svc-blue-soft);
+  color: var(--svc-blue);
+}
+
+.asm-date-day.is-empty {
+  visibility: hidden;
+  cursor: default;
+}
+
+.asm-date-day.is-today {
+  box-shadow: inset 0 0 0 1px var(--svc-blue-border);
+}
+
+.asm-date-day.is-selected {
+  background: var(--svc-blue);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Modal Search Field */
+.asm-search {
+  position: relative;
+}
+
+.asm-search > svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.asm-search-input {
+  padding-left: 42px;
+}
+
+.asm-search-message {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--svc-muted);
+}
+
+.asm-results {
+  margin-top: 8px;
+  border: 1px solid var(--svc-border);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.asm-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.asm-result-item:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.asm-result-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--svc-text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asm-result-vehicle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--svc-blue);
+  background: var(--svc-blue-soft);
+  border: 1px solid var(--svc-blue-border);
+  border-radius: 9999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Select */
+.asm-select-wrap {
+  position: relative;
+}
+
+.asm-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding-right: 40px;
+  background-image: none;
+  cursor: pointer;
+}
+
+.asm-select:hover:not(:disabled):not(:focus) {
+  border-color: #cbd5e1;
+}
+
+.asm-select-chevron {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  pointer-events: none;
+}
+
+/* Footer */
+.asm-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--svc-border);
+  background: #f8fafc;
+}
+
+.asm-btn-cancel,
+.asm-btn-save {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.asm-btn-cancel {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.asm-btn-cancel:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.asm-btn-save {
+  background: var(--svc-blue);
+  border: 1px solid var(--svc-blue);
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.asm-btn-save:hover:not(:disabled) {
+  background: var(--svc-blue-hover);
+  border-color: var(--svc-blue-hover);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
+}
+
+.asm-btn-save:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.asm-btn-cancel:disabled,
+.asm-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.asm-modal .alert {
+  border-radius: 10px;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .asm-modal {
+    padding: 12px;
+  }
+  .asm-modal .modal-content {
+    max-height: calc(100vh - 24px);
+    border-radius: 14px;
+  }
+  .asm-head {
+    padding: 16px;
+  }
+  .asm-modal .modal-body {
+    padding: 16px;
+  }
+  .asm-foot {
+    padding: 12px 16px;
+  }
+  .asm-btn-cancel,
+  .asm-btn-save {
+    flex: 1;
+  }
+}
+

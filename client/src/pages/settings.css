@@ -1,0 +1,179 @@
+/* GarageCare Settings modern SaaS UI (UI only, scoped to .set-page) */
+.set-page {
+  --set-card-border: #e2e8f0;
+  --set-soft: #f8fafc;
+  --set-blue: #2563eb;
+  --set-blue-hover: #1d4ed8;
+  --set-blue-soft: #eff6ff;
+  --set-ink: #0f172a;
+  --set-muted: #64748b;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+.set-page *,
+.set-page *::before,
+.set-page *::after { box-sizing: border-box; }
+.set-page input,
+.set-page textarea,
+.set-page select,
+.set-page button,
+.set-page form,
+.set-page .card,
+.set-page .set-card,
+.set-page .set-panel,
+.set-page .set-slide,
+.set-page .set-field,
+.set-page .set-grid-2 {
+  min-width: 0;
+  max-width: 100%;
+}
+.set-container {
+  width: 100%;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 0;
+}
+.set-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; width: 100%; min-width: 0; text-align: left; }
+.set-head-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--set-blue-soft); color: var(--set-blue); border: 1px solid #bfdbfe;
+}
+.set-head-title { margin: 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; color: var(--set-ink); line-height: 1.25; text-align: left; }
+.set-head-sub { margin: 2px 0 0; font-size: 0.86rem; color: var(--set-muted); line-height: 1.5; text-align: left; }
+.set-page ul.set-tabs.nav-tabs {
+  display: flex; align-items: stretch; gap: 4px; flex-wrap: nowrap;
+  background: #eef2f7; border: 1px solid var(--set-card-border);
+  border-radius: 14px;
+  padding: 4px; margin: 0 0 20px; width: 100%; min-width: 0;
+  box-sizing: border-box;
+  overflow-x: clip; overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.set-page ul.set-tabs.nav-tabs::-webkit-scrollbar { display: none; }
+.set-page ul.set-tabs.nav-tabs .nav-item { flex: 1 1 0; min-width: max-content; display: flex; margin: 0; }
+.set-page ul.set-tabs.nav-tabs .nav-link {
+  border: 0 !important; margin-bottom: 0 !important; border-radius: 10px; color: var(--set-muted) !important;
+  font-size: 0.85rem; font-weight: 600; padding: 10px 16px; white-space: nowrap;
+  background: transparent !important; display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex: 1 1 0; min-width: 0; width: 100%; min-height: 42px; max-width: 100%; line-height: 1.2; text-align: center;
+  cursor: pointer; overflow: hidden;
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+.set-page ul.set-tabs.nav-tabs .nav-link svg { flex-shrink: 0; width: 16px; height: 16px; }
+.set-page ul.set-tabs.nav-tabs .nav-link:hover { color: var(--set-ink) !important; background: #f8fafc !important; }
+.set-page ul.set-tabs.nav-tabs .nav-link.active {
+  background: var(--set-blue-soft) !important; color: var(--set-blue-hover) !important;
+  font-weight: 600; box-shadow: 0 1px 4px rgba(37, 99, 235, 0.22), inset 0 0 0 1px #bfdbfe;
+}
+.set-page ul.set-tabs.nav-tabs .nav-link.active svg { color: var(--set-blue-hover); }
+.set-layout { display: block; width: 100%; min-width: 0; max-width: 100%; overflow-x: clip; }
+.set-main { min-width: 0; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+.set-main-single { width: 100%; max-width: 100%; min-width: 0; }
+/* Keep the transient status alert aligned to the centered container */
+.set-page .alert { width: 100%; max-width: 100%; margin-bottom: 20px; text-align: left; }
+
+/* Constrain every tab panel card to match the centered container */
+.set-page.set-page .set-tab-zone,
+.set-page.set-page .set-panel,
+.set-page.set-page .set-panel-viewport,
+.set-page.set-page .set-slide {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.set-page.set-page .set-slide .set-card { width: 100%; max-width: 100%; }
+.set-page .set-card {
+  background: #fff; border: 1px solid var(--set-card-border); border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 6px 16px rgba(15, 23, 42, 0.05);
+  overflow: hidden; transition: box-shadow 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+@media (hover: hover) {
+  .set-page .set-card:hover { box-shadow: 0 2px 6px rgba(15,23,42,0.06), 0 10px 24px rgba(15,23,42,0.07); }
+}
+.set-card-head { display: flex; align-items: flex-start; gap: 12px; padding: 20px 20px 16px; border-bottom: 1px solid #eef2f7; text-align: left; }
+.set-card-icon {
+  width: 38px; height: 38px; border-radius: 10px; display: inline-flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--set-blue-soft); color: var(--set-blue); border: 1px solid #dbeafe;
+}
+.set-card-head h5 { margin: 0; font-size: 1rem; font-weight: 700; color: var(--set-ink); letter-spacing: -0.01em; text-align: left; }
+.set-card-head small { display: block; margin-top: 3px; font-size: 0.82rem; color: var(--set-muted); background: transparent !important; line-height: 1.5; text-align: left; }
+.set-card-body { padding: 20px; text-align: left; }
+.set-page .form-label, .set-page label { background: transparent !important; text-align: left; }
+.set-page .set-field-label {
+  font-size: 0.82rem; font-weight: 600; color: #334155;
+  margin-bottom: 6px; display: inline-flex; align-items: center; gap: 6px;
+  background: transparent !important;
+  text-align: left;
+}
+.set-page .set-field-label svg { color: var(--set-muted); }
+.set-page .form-control {
+  padding: 10px 12px; border-radius: 10px; border: 1px solid #e2e8f0;
+  font-size: 0.88rem; color: var(--set-ink); background: #fff;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  text-align: left;
+}
+.set-page .form-control::placeholder { color: #94a3b8; }
+.set-page .form-control:hover:not(:disabled):not(:focus) { border-color: #cbd5e1; }
+.set-page .form-control:focus { border-color: var(--set-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); outline: 0; }
+/* Controlled textarea heights (~2-3 lines) so they never stretch the layout */
+.set-page textarea.form-control { min-height: 78px; max-height: 220px; resize: vertical; line-height: 1.5; }
+.set-page .set-hint { display: block; margin-top: 6px; font-size: 0.78rem; color: var(--set-muted); background: transparent !important; line-height: 1.5; text-align: left; }
+.set-page .set-hint code { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 1px 6px; font-size: 0.76rem; color: #334155; }
+.set-page p, .set-page small, .set-page span, .set-page h5, .set-page h6, .set-page label { background: transparent !important; }
+.set-grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.set-field { margin-bottom: 16px; min-width: 0; text-align: left; }
+.set-grid-2 .set-field { margin-bottom: 0; }
+.set-grid-2-wrap { margin-bottom: 16px; }
+/* Neutralize Bootstrap row negative gutters inside the fixed-width panel so the
+   row can never push past the card/viewport and create page-level x-scroll. */
+.set-page .set-slide > .row { margin-left: 0; margin-right: 0; --bs-gutter-x: 0; }
+.set-page .set-slide > .row > [class*="col-"] { padding-left: 0; padding-right: 0; min-width: 0; }
+.set-page .set-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--set-blue); border: 1px solid var(--set-blue); color: #fff;
+  font-weight: 600; font-size: 0.87rem; border-radius: 10px; padding: 10px 16px; min-height: 40px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+}
+.set-page .set-btn:hover:not(:disabled) { background: var(--set-blue-hover); border-color: var(--set-blue-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); color: #fff; }
+.set-page .set-btn:active:not(:disabled) { transform: translateY(0); }
+.set-page .set-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+.set-page .alert { border-radius: 10px; font-size: 0.85rem; }
+@media (max-width: 991.98px) { .set-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 767.98px) {
+  .set-header { margin-bottom: 16px; }
+  .set-head-title { font-size: 1.2rem; }
+  .set-page ul.set-tabs.nav-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .set-page ul.set-tabs.nav-tabs::-webkit-scrollbar { display: none; }
+  .set-page ul.set-tabs.nav-tabs .nav-item { flex: 1 0 auto; min-width: max-content; display: flex; }
+  .set-page ul.set-tabs.nav-tabs .nav-link { justify-content: center; width: 100%; max-width: 100%; padding: 9px 10px; font-size: 0.8rem; gap: 6px; min-height: 40px; }
+  .set-card-head, .set-card-body { padding-left: 16px; padding-right: 16px; }
+  .set-grid-2 { grid-template-columns: minmax(0, 1fr); }
+  .set-page .set-btn { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .set-page .set-card, .set-page .set-btn, .set-tabs .nav-link, .set-page .form-control { transition: none; }
+  .set-slide { animation: none; }
+}
+
+/* Stable tab panel viewport + subtle directional slide (content only; tabs/sidebar/header stay fixed) */
+.set-page.set-page { overflow-x: clip; }
+.set-tab-zone { min-width: 0; width: 100%; max-width: 100%; overflow-x: clip; }
+.set-panel-viewport {
+  position: relative; display: block; min-width: 0; width: 100%; max-width: 100%;
+  overflow: clip; overscroll-behavior: contain; contain: layout style;
+  min-height: 420px;
+}
+@supports not (overflow: clip) { .set-panel-viewport { overflow: hidden; } }
+.set-slide { display: block; min-width: 0; width: 100%; max-width: 100%; min-height: 100%; animation: set-slide-in 220ms ease both; will-change: transform, opacity; }
+.set-slide.from-right { --set-slide-from: 14px; }
+.set-slide.from-left { --set-slide-from: -14px; }
+@keyframes set-slide-in { from { opacity: 0; transform: translateX(var(--set-slide-from, 14px)); } to { opacity: 1; transform: translateX(0); } }
