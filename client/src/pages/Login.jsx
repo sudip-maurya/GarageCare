@@ -157,6 +157,12 @@ const Login = () => {
               </label>
             </div>
 
+            {import.meta.env.VITE_DEMO_MODE === 'true' && (
+              <div className="gc-login-demo-hint">
+                Demo access — Username: <strong>demo</strong> · Password: <strong>demo123456</strong>
+              </div>
+            )}
+
             <button type="submit" className="gc-login-btn" disabled={loading}>
               {loading ? (
                 <>

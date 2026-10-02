@@ -347,6 +347,22 @@
   accent-color: #2563eb;
   cursor: pointer;
 }
+.gc-login-demo-hint {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  background: rgba(30, 58, 138, 0.28);
+  border: 1px solid rgba(96, 165, 250, 0.32);
+  border-radius: 9px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #bfdbfe;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+.gc-login-demo-hint strong {
+  color: #ffffff;
+  font-weight: 600;
+}
 .gc-login-btn {
   display: inline-flex;
   align-items: center;
