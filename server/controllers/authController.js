@@ -38,6 +38,10 @@ const login = async (req, res) => {
 // @access  Private
 const changePassword = async (req, res) => {
   try {
+    if (process.env.DEMO_MODE === 'true') {
+      return res.status(403).json({ message: 'Password change is disabled in the demo version.' });
+    }
+
     const { oldPassword, newPassword } = req.body;
 
     if (!newPassword || typeof newPassword !== 'string' || newPassword.trim().length < 6) {
