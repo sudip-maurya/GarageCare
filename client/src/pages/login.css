@@ -1,4 +1,4 @@
-﻿/* ===== GarageCare â€” premium automotive SaaS login ===== */
+/* ===== GarageCare â€” premium automotive SaaS login ===== */
 
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap');
 
@@ -381,6 +381,36 @@
 .gc-login-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 .gc-login-btn svg { transition: transform 0.2s ease; }
 .gc-login-btn:hover:not(:disabled) svg { transform: translateX(3px); }
+
+.gc-login-spinner {
+  animation: gc-spin 0.8s linear infinite;
+}
+
+@keyframes gc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gc-login-slow-hint {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+  color: #93c5fd;
+  text-align: center;
+  line-height: 1.4;
+  animation: gc-fade-in 0.3s ease;
+}
+
+@keyframes gc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .gc-login-divider {
   height: 1px;

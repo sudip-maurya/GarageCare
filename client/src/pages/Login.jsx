@@ -1,8 +1,8 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import {
-  Bike, User, Lock, Eye, EyeOff, ArrowRight, ShieldCheck,
+  Bike, User, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Loader2,
 } from 'lucide-react';
 const loginBg = '/images/garage-bike.jpg';
 import './login.css';
@@ -14,9 +14,25 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSlowHint, setShowSlowHint] = useState(false);
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      setShowSlowHint(false);
+      timer = setTimeout(() => {
+        setShowSlowHint(true);
+      }, 6000);
+    } else {
+      setShowSlowHint(false);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +116,7 @@ const Login = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
+                disabled={loading}
                 required
               />
             </div>
@@ -116,6 +133,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
+                disabled={loading}
                 required
               />
               <button
@@ -140,9 +158,23 @@ const Login = () => {
             </div>
 
             <button type="submit" className="gc-login-btn" disabled={loading}>
-              {loading ? 'Logging in…' : 'Login'}
-              <ArrowRight size={18} />
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="gc-login-spinner" />
+                  Logging in…
+                </>
+              ) : (
+                <>
+                  Login
+                  <ArrowRight size={18} />
+                </>
+              )}
             </button>
+            {showSlowHint && (
+              <p className="gc-login-slow-hint">
+                Server start ho raha hai, thoda wait karo…
+              </p>
+            )}
           </form>
 
           <div className="gc-login-divider" aria-hidden="true" />
