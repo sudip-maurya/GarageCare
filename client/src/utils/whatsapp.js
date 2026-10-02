@@ -95,7 +95,7 @@ export const getWhatsAppUrl = (bill, garageNameParam, garagePhoneParam) => {
   } else {
     // Partially Paid or Unpaid
     const account = bill.paymentAccountDetails || bill.paymentAccount;
-    const upiId = account?.upiId || 'N/A';
+    const upiId = account?.upiId && account.upiId !== 'N/A' ? account.upiId.trim() : '';
     const accountName = account?.name || garageName;
 
     messageLines = [
@@ -105,7 +105,7 @@ export const getWhatsAppUrl = (bill, garageNameParam, garagePhoneParam) => {
       `*Total:* ₹${totalAmount.toLocaleString('en-IN')}`,
       `*Paid:* ₹${paidAmount.toLocaleString('en-IN')}`,
       `*Baaki:* *₹${outstanding.toLocaleString('en-IN')}*`,
-      `UPI se pay karein: ${upiId} (${accountName})`,
+      ...(upiId ? [`UPI se pay karein: ${upiId} (${accountName})`] : []),
       ...sig
     ];
   }
@@ -136,14 +136,14 @@ export const getPaymentReminderWhatsAppUrl = (bill, garageNameParam, garagePhone
   const paidAmount = Number(bill.totalPaid !== undefined ? bill.totalPaid : bill.paidAmount) || 0;
   const outstanding = Number(bill.outstanding !== undefined ? bill.outstanding : Math.max(totalAmount - paidAmount, 0));
   const account = bill.paymentAccountDetails || bill.paymentAccount;
-  const upiId = account?.upiId || 'N/A';
+  const upiId = account?.upiId && account.upiId !== 'N/A' ? account.upiId.trim() : '';
   const accountName = account?.name || garageName;
 
   const messageLines = [
     `Namaste ${customerName},`,
     `Aapke bill #${bill.billNumber} ka *₹${outstanding.toLocaleString('en-IN')}* baaki hai.`,
     `Bill Total: ₹${totalAmount.toLocaleString('en-IN')} | Paid: ₹${paidAmount.toLocaleString('en-IN')}`,
-    `UPI: ${upiId} (${accountName})`,
+    ...(upiId ? [`UPI: ${upiId} (${accountName})`] : []),
     'Jaldi payment kar dein. Dhanyavaad!',
     ...sig
   ];
@@ -214,13 +214,14 @@ export const getReminderWhatsAppUrl = (reminder, garageName = 'My Garage', garag
     case 'Payment': {
       const outstanding = reminder.metadata?.outstanding ? Number(reminder.metadata.outstanding).toLocaleString('en-IN') : '0';
       const billNum = reminder.metadata?.billNumber || 'N/A';
-      const upiId = reminder.metadata?.upiId || reminder.upiId || 'N/A';
+      const rawUpi = reminder.metadata?.upiId || reminder.upiId;
+      const upiId = rawUpi && rawUpi !== 'N/A' ? String(rawUpi).trim() : '';
       const accountName = reminder.metadata?.accountName || reminder.accountName || garageName;
       messageLines = [
         `Namaste ${customerName},`,
         `*${garageName}* — payment reminder`,
         `*Bill #${billNum}* (${vehicleNumber}) me *₹${outstanding}* baaki hai.`,
-        `UPI se pay karein: ${upiId} (${accountName})`,
+        ...(upiId ? [`UPI se pay karein: ${upiId} (${accountName})`] : []),
         'Dhanyavaad!',
         ...sig
       ];

@@ -18,7 +18,7 @@ const QUICK_ADD_SERVICES = [
   { name: 'Chain Lube and Cleaning', type: 'Part' },
   { name: 'Brake Linear FR', type: 'Part' },
   { name: 'Brake Linear RR', type: 'Part' },
-  { name: 'Barring', type: 'Part' },
+  { name: 'Bearing', type: 'Part' },
   { name: 'Shockup Bush', type: 'Part' },
   { name: 'Link Bush', type: 'Part' },
   { name: 'Labour Charge', type: 'Service' },
