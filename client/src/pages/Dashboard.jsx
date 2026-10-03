@@ -19,6 +19,7 @@ import {
   Clock
 } from 'lucide-react';
 import '../dashboard.css';
+import ScrollableCardList from '../components/ScrollableCardList';
 
 const inr = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
 const startOfDay = (d) => {
@@ -48,6 +49,7 @@ const Dashboard = () => {
     recentBills: []
   });
   const [bills, setBills] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [reminders, setReminders] = useState([]);
   const [revPeriod, setRevPeriod] = useState('7d');
   const [attentionHorizon, setAttentionHorizon] = useState(30);
@@ -84,6 +86,13 @@ const Dashboard = () => {
         setBills(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
       })
       .catch(() => setBills([]));
+
+    api.get('/payments')
+      .then(res => {
+        const raw = res.data;
+        setPayments(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
+      })
+      .catch(() => setPayments([]));
 
     api.get('/reminders')
       .then(res => {
@@ -242,6 +251,58 @@ const Dashboard = () => {
   const totalRevenue = Number(stats.totalRevenue) || 0;
   const collectionPct = totalRevenue > 0 ? Math.min(Math.round(((Number(stats.totalPaid) || 0) / totalRevenue) * 100), 100) : 0;
   const outstandingPct = totalRevenue > 0 ? Math.min(Math.round(((Number(stats.totalOutstanding) || 0) / totalRevenue) * 100), 100) : 0;
+
+  /* ---------- Financial KPI sub-stats ---------- */
+  const billCount = safeBills.length;
+  const avgBillValue = billCount > 0 ? inr(Math.round(totalRevenue / billCount)) : '—';
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const thisMonthBills = safeBills.filter(b => {
+    const d = b.date ? new Date(b.date) : (b.createdAt ? new Date(b.createdAt) : null);
+    return d && !isNaN(d.getTime()) && d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+  });
+  const thisMonthInvoiced = thisMonthBills.reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+
+  const sevenDaysAgoMs = startOfDay(now).getTime() - 6 * 86400000;
+  const safePayments = Array.isArray(payments) ? payments : [];
+  const thisWeekPayments = safePayments.filter(p => {
+    const pDate = p.paymentDate ? new Date(p.paymentDate) : (p.createdAt ? new Date(p.createdAt) : null);
+    if (!pDate || isNaN(pDate.getTime())) return false;
+    const isCompleted = !p.status || p.status === 'Completed';
+    return isCompleted && pDate.getTime() >= sevenDaysAgoMs;
+  });
+  const thisWeekCollected = thisWeekPayments.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+
+  const allUnpaidBills = safeBills.filter(b => (Number(b.outstanding) || 0) > 0);
+  let oldestOverdueStr = '—';
+  let largestDueStr = '—';
+
+  if (allUnpaidBills.length > 0) {
+    let oldestTime = Infinity;
+    let maxDue = 0;
+    allUnpaidBills.forEach(b => {
+      const due = Number(b.outstanding) || 0;
+      if (due > maxDue) maxDue = due;
+      const d = b.date ? new Date(b.date) : (b.createdAt ? new Date(b.createdAt) : null);
+      if (d && !isNaN(d.getTime()) && d.getTime() < oldestTime) {
+        oldestTime = d.getTime();
+      }
+    });
+
+    if (oldestTime !== Infinity) {
+      const nowStart = startOfDay(now).getTime();
+      const oldestBillStart = startOfDay(new Date(oldestTime)).getTime();
+      const diffDays = Math.max(0, Math.floor((nowStart - oldestBillStart) / 86400000));
+      oldestOverdueStr = diffDays === 1 ? '1 day' : `${diffDays} days`;
+    }
+
+    if (maxDue > 0) {
+      largestDueStr = inr(maxDue);
+    }
+  }
+
   const billCustomerName = (b) => b.customer?.name || b.customerDetails?.name || 'Customer';
   const initialsOf = (name) => {
     const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
@@ -379,7 +440,7 @@ const Dashboard = () => {
       {/* Revenue overview + Today's priority */}
       <div className="row g-3 mb-4">
         <div className="col-lg-7">
-          <div className="dash-card h-100">
+          <div className="dash-card dash-revenue-card h-100">
             <div className="dash-card-head">
               <h6 className="mb-0 fw-bold d-flex align-items-center gap-2">
                 <span className="dash-head-icon dash-head-blue"><IndianRupee size={15} /></span>
@@ -407,7 +468,7 @@ const Dashboard = () => {
                   ))}
                 </div>
               </div>
-            <div className="dash-card-body">
+            <div className="dash-card-body dash-revenue-body">
               <div className="dash-revenue-total">{inr(periodRevenue)}</div>
               <small className="text-muted">Total Invoiced Revenue</small>
 
@@ -455,7 +516,7 @@ const Dashboard = () => {
                   <Link to="/reminders" className="btn btn-sm btn-outline-primary rounded-pill">View Reminders</Link>
                 </div>
               ) : (
-                <div className="d-flex flex-column gap-2">
+                <ScrollableCardList maxItems={5} className="dash-priority-list">
                   {priorities.map(p => {
                     const PriorityIcon = p.type === 'Service' ? Wrench : (p.type === 'Insurance' ? ShieldCheck : p.type === 'PUC' ? FileCheck : CreditCard);
                     return (
@@ -472,7 +533,7 @@ const Dashboard = () => {
                       </Link>
                     );
                   })}
-                </div>
+                </ScrollableCardList>
               )}
             </div>
           </div>
@@ -507,6 +568,17 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <small className="dash-finance-note">{loading ? '—' : `${collectionPct}% collected`}</small>
+                <div className="dash-finance-divider" />
+                <div className="dash-finance-stats">
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">Avg. bill value</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : avgBillValue}</span>
+                  </div>
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">This month</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : inr(thisMonthInvoiced)}</span>
+                  </div>
+                </div>
                 <Link to="/bills" className="dash-finance-action">View Invoices <ArrowRight size={13} /></Link>
               </div>
             </div>
@@ -534,6 +606,17 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <small className="dash-finance-note">{loading ? '—' : `Collection rate ${collectionPct}%`}</small>
+                <div className="dash-finance-divider" />
+                <div className="dash-finance-stats">
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">Payments received</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : safePayments.length}</span>
+                  </div>
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">This week</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : inr(thisWeekCollected)}</span>
+                  </div>
+                </div>
                 <Link to="/payments" className="dash-finance-action">View Payments <ArrowRight size={13} /></Link>
               </div>
             </div>
@@ -561,6 +644,17 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <small className="dash-finance-note">{loading ? '—' : `${outstandingPct}% of invoiced`}</small>
+                <div className="dash-finance-divider" />
+                <div className="dash-finance-stats">
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">Oldest overdue</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : oldestOverdueStr}</span>
+                  </div>
+                  <div className="dash-finance-stat-row">
+                    <span className="dash-finance-stat-label">Largest due</span>
+                    <span className="dash-finance-stat-value">{loading ? '...' : largestDueStr}</span>
+                  </div>
+                </div>
                 <Link to="/payments" className="dash-finance-action">View Ledger <ArrowRight size={13} /></Link>
               </div>
             </div>
@@ -587,7 +681,7 @@ const Dashboard = () => {
                   <small className="text-muted">No outstanding dues.</small>
                 </div>
               ) : (
-                <div className="d-flex flex-column gap-2">
+                <ScrollableCardList maxItems={3} className="dash-outstanding-list">
                   {outstandingBills.map(b => {
                     const info = billStatusInfo(b);
                     const name = billCustomerName(b);
@@ -605,7 +699,7 @@ const Dashboard = () => {
                       </div>
                     );
                   })}
-                </div>
+                </ScrollableCardList>
               )}
             </div>
           </div>
@@ -683,7 +777,7 @@ const Dashboard = () => {
                   <small className="text-muted">Invoices created from the Bills page will appear here.</small>
                 </div>
               ) : (
-                <div className="table-responsive dash-recent-bills-wrap">
+                <ScrollableCardList maxItems={9} className="table-responsive dash-recent-bills-wrap">
                   <table className="table dash-table align-middle mb-0">
                     <thead>
                       <tr>
@@ -750,7 +844,7 @@ const Dashboard = () => {
                       })}
                     </tbody>
                   </table>
-                </div>
+                </ScrollableCardList>
               )}
             </div>
           </div>

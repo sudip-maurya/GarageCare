@@ -386,6 +386,17 @@
 }
 
 /* ---- Revenue chart ---- */
+.dash-card.dash-revenue-card {
+  display: flex;
+  flex-direction: column;
+}
+.dash-revenue-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 16px 16px 14px;
+}
 .dash-revenue-total {
   font-size: 1.6rem;
   font-weight: 800;
@@ -403,9 +414,12 @@
   display: flex;
   align-items: stretch;
   gap: 3px;
-  height: 150px;
+  flex: 1 1 auto;
+  min-height: 140px;
+  height: 100%;
   padding: 12px 4px 0;
   margin-top: 14px;
+  margin-bottom: 0;
   overflow: hidden;
 }
 .dash-chart-col {
@@ -414,9 +428,10 @@
   flex-direction: column;
   align-items: stretch;
   min-width: 0;
+  height: 100%;
 }
 .dash-chart-bar-wrap {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   display: flex;
   align-items: flex-end;
@@ -427,15 +442,27 @@
   margin: 0 auto;
   border-radius: 4px 4px 2px 2px;
   background: linear-gradient(180deg, #5596f7, #2f74ea);
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .dash-chart-bar.zero { background: #e6ebf3; }
 .dash-chart-label {
-  font-size: 0.6rem;
+  margin-top: 4px;
+  font-size: 0.62rem;
   color: var(--dash-faint);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
+}
+.dash-revenue-body .dash-empty {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  min-height: 140px;
 }
 
 /* ---- Today's Priority ---- */
@@ -523,29 +550,73 @@
 .dash-priority-due.due-info    { background: var(--dash-sky-soft);    color: var(--dash-sky); }
 .dash-priority-due.due-success { background: var(--dash-green-soft);  color: var(--dash-green); }
 
-/* ---- Vehicles requiring attention mini-cards ---- */
-.dash-attention-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 602px;
+/* ---- Vehicles requiring attention & reusable card scroll lists ---- */
+.dash-scrollable-list,
+.dash-attention-list,
+.dash-priority-list,
+.dash-outstanding-list,
+.dash-recent-bills-wrap {
   overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 4px;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
-.dash-attention-list::-webkit-scrollbar {
-  width: 5px;
+
+.dash-scrollable-list:not(.table-responsive),
+.dash-attention-list,
+.dash-priority-list,
+.dash-outstanding-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-x: hidden;
+  padding-right: 4px;
 }
-.dash-attention-list::-webkit-scrollbar-track {
+
+.dash-attention-list {
+  max-height: 602px;
+}
+
+.dash-priority-list {
+  max-height: 382px;
+}
+
+.dash-outstanding-list {
+  max-height: 210px;
+}
+
+.dash-recent-bills-wrap {
+  max-height: 590px;
+  overflow-x: auto;
+}
+
+.dash-scrollable-list::-webkit-scrollbar,
+.dash-attention-list::-webkit-scrollbar,
+.dash-priority-list::-webkit-scrollbar,
+.dash-outstanding-list::-webkit-scrollbar,
+.dash-recent-bills-wrap::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.dash-scrollable-list::-webkit-scrollbar-track,
+.dash-attention-list::-webkit-scrollbar-track,
+.dash-priority-list::-webkit-scrollbar-track,
+.dash-outstanding-list::-webkit-scrollbar-track,
+.dash-recent-bills-wrap::-webkit-scrollbar-track {
   background: transparent;
 }
-.dash-attention-list::-webkit-scrollbar-thumb {
+.dash-scrollable-list::-webkit-scrollbar-thumb,
+.dash-attention-list::-webkit-scrollbar-thumb,
+.dash-priority-list::-webkit-scrollbar-thumb,
+.dash-outstanding-list::-webkit-scrollbar-thumb,
+.dash-recent-bills-wrap::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
   border-radius: 9999px;
 }
-.dash-attention-list::-webkit-scrollbar-thumb:hover {
+.dash-scrollable-list::-webkit-scrollbar-thumb:hover,
+.dash-attention-list::-webkit-scrollbar-thumb:hover,
+.dash-priority-list::-webkit-scrollbar-thumb:hover,
+.dash-outstanding-list::-webkit-scrollbar-thumb:hover,
+.dash-recent-bills-wrap::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
 }
 
@@ -723,6 +794,38 @@
   color: var(--dash-faint);
   margin-top: 10px;
 }
+.dash-finance-divider {
+  height: 1px;
+  background-color: var(--dash-line-soft);
+  margin: 11px 0 9px 0;
+}
+.dash-finance-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dash-finance-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.74rem;
+  line-height: 1.3;
+}
+.dash-finance-stat-label {
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.dash-finance-stat-value {
+  color: #0f172a;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
 .dash-finance-action {
   margin-top: auto;
   padding-top: 10px;
@@ -832,27 +935,7 @@
 .dash-status-primary { background: var(--dash-blue-soft);   color: var(--dash-blue-strong); }
 
 /* ---- Recent invoices table & container ---- */
-.dash-recent-bills-wrap {
-  max-height: 602px;
-  overflow-y: auto;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
-}
-.dash-recent-bills-wrap::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-.dash-recent-bills-wrap::-webkit-scrollbar-track {
-  background: transparent;
-}
-.dash-recent-bills-wrap::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 9999px;
-}
-.dash-recent-bills-wrap::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
-}
+
 
 .dash-table {
   width: 100%;
@@ -987,9 +1070,10 @@
 @media (max-width: 767.98px) {
   .dash-kpi .dash-kpi-value { font-size: 1.4rem; }
   .dash-finance-value { font-size: 1.3rem; }
-  .dash-chart { height: 120px; padding: 8px 2px 0; }
+  .dash-chart { min-height: 120px; height: 100%; padding: 8px 2px 0; }
   .dash-card-head { padding: 10px 12px; }
   .dash-card-body { padding: 12px; }
+  .dash-revenue-body { padding: 12px 12px 10px; }
 }
 @media (max-width: 575.98px) {
   .dash-table thead th,
