@@ -77,6 +77,10 @@ const Settings = () => {
             paymentInstructions: data.paymentInstructions || ''
           });
 
+          if (data.garageName) {
+            try { localStorage.setItem('gc_garage_name', data.garageName); } catch (_) {}
+          }
+
           if (data.reminders) {
             setReminderRules({
               serviceDays: Array.isArray(data.reminders.service) ? data.reminders.service.join(', ') : '15, 7, 3',
@@ -102,6 +106,9 @@ const Settings = () => {
 
     try {
       await api.put('/settings', profile);
+      if (profile.garageName) {
+        try { localStorage.setItem('gc_garage_name', profile.garageName); } catch (_) {}
+      }
       setMessage({ type: 'success', text: 'Garage profile details updated successfully!' });
     } catch (err) {
       setMessage({ type: 'danger', text: err.response?.data?.message || 'Failed to update settings.' });

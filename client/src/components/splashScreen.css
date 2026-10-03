@@ -1,0 +1,388 @@
+/* GarageCare Branded Splash Screen Styles */
+
+.splash-container {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background-color: #060b1a;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(37, 99, 235, 0.25), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(14, 165, 233, 0.15), transparent 70%),
+    linear-gradient(180deg, #090f24 0%, #050814 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #f8fafc;
+  user-select: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Subtle background grid / ambient glow */
+.splash-bg-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: splashPulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes splashPulseGlow {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+/* Central Card */
+.splash-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.25rem 1.75rem;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  border-radius: 24px;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.65),
+    0 0 35px rgba(37, 99, 235, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: splashCardFadeIn 0.4s ease-out;
+}
+
+@keyframes splashCardFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Logo & Brand Header */
+.splash-brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.splash-logo-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.6), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.splash-logo-fallback {
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.splash-title span {
+  color: #38bdf8;
+  background: linear-gradient(90deg, #38bdf8, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dynamic Garage Name Badge */
+.splash-garage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #93c5fd;
+  max-width: 90%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.splash-garage-badge svg {
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+/* Animated Loader Section */
+.splash-loader-stage {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.75rem 0 1.25rem;
+}
+
+/* Glowing rotating ring */
+.splash-spinner-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(37, 99, 235, 0.15);
+  border-top-color: #38bdf8;
+  border-right-color: #2563eb;
+  animation: splashRingRotate 1.4s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+}
+
+@keyframes splashRingRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Secondary outer dashed counter-pulse ring */
+.splash-spinner-track {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(96, 165, 250, 0.25);
+  animation: splashRingCounter 12s linear infinite;
+}
+
+@keyframes splashRingCounter {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Rotating Wrench Center */
+.splash-wrench-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 2.25rem;
+  line-height: 1;
+  display: inline-block;
+  animation: splashWrenchSwing 2.2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+}
+
+@keyframes splashWrenchSwing {
+  0% {
+    transform: rotate(-30deg) scale(0.95);
+  }
+  50% {
+    transform: rotate(45deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(-15deg) scale(1);
+  }
+}
+
+/* Rotating Messages */
+.splash-msg-container {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.splash-msg-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  animation: splashMsgSlideIn 0.35s ease-out;
+}
+
+@keyframes splashMsgSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bottom Note */
+.splash-note {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.splash-note svg {
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+/* Timeout / Retry State */
+.splash-timeout-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+  animation: splashMsgSlideIn 0.35s ease-out;
+}
+
+.splash-timeout-alert {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.85rem;
+  color: #fca5a5;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.splash-timeout-alert svg {
+  flex-shrink: 0;
+  color: #f87171;
+}
+
+.splash-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1px solid #3b82f6;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.splash-retry-btn:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+  transform: translateY(-1px);
+}
+
+.splash-retry-btn:active {
+  transform: translateY(0);
+}
+
+.splash-retry-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.splash-retry-btn:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .splash-card {
+    padding: 1.85rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .splash-logo-wrap {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+  }
+
+  .splash-title {
+    font-size: 1.45rem;
+  }
+
+  .splash-garage-badge {
+    font-size: 0.78rem;
+  }
+
+  .splash-loader-stage {
+    width: 80px;
+    height: 80px;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .splash-wrench-icon {
+    font-size: 1.95rem;
+  }
+
+  .splash-msg-text {
+    font-size: 0.95rem;
+  }
+
+  .splash-note {
+    font-size: 0.74rem;
+    padding: 0.5rem 0.7rem;
+  }
+}

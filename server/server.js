@@ -49,9 +49,32 @@ app.use(cors({
 app.use(express.json());
 app.use('/uploads', express.static(uploadsDir));
 
-// Public health check route for uptime monitors and container liveness
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+// Public health check route for uptime monitors, container liveness, and client cold-start ping
+app.get(['/health', '/api/health'], async (req, res) => {
+  if (req.query.delay) {
+    const delayMs = Math.min(120000, parseInt(req.query.delay, 10) || 0);
+    if (delayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  try {
+    const Settings = require('./models/Settings');
+    const settings = await Settings.findOne().select('garageName garageLogo').lean();
+    res.json({
+      status: 'ok',
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      garageName: settings?.garageName || 'Maurya Automobile',
+      garageLogo: settings?.garageLogo || ''
+    });
+  } catch (_e) {
+    res.json({
+      status: 'ok',
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      garageName: 'Maurya Automobile'
+    });
+  }
 });
 
 // Routes
