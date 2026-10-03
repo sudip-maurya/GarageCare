@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import {
@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [bills, setBills] = useState([]);
   const [payments, setPayments] = useState([]);
   const [reminders, setReminders] = useState([]);
+  const [remindersLoaded, setRemindersLoaded] = useState(false);
   const [revPeriod, setRevPeriod] = useState('7d');
   const [attentionHorizon, setAttentionHorizon] = useState(30);
   const [loading, setLoading] = useState(true);
@@ -100,7 +101,8 @@ const Dashboard = () => {
         const raw = res.data;
         setReminders(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
       })
-      .catch(() => setReminders([]));
+      .catch(() => setReminders([]))
+      .finally(() => setRemindersLoaded(true));
 
     // Reminder "due soon" threshold from existing settings (fallback 30 days)
     api.get('/settings')
@@ -199,6 +201,68 @@ const Dashboard = () => {
       due
     };
   });
+
+  /* ---------- Urgent reminders dismiss logic ---------- */
+  const DISMISSED_KEY = 'gc_dismissed_urgent_reminders';
+
+  const urgentReminderIds = useMemo(() => {
+    const today = startOfDay(new Date());
+    const in7Days = new Date(today);
+    in7Days.setDate(in7Days.getDate() + 7);
+    in7Days.setHours(23, 59, 59, 999);
+
+    return (Array.isArray(reminders) ? reminders : [])
+      .filter(r => {
+        if (!r || (r.status && r.status !== 'Pending')) return false;
+        if (!r.dueDate) return false;
+        const d = new Date(r.dueDate);
+        return !isNaN(d.getTime()) && d <= in7Days;
+      })
+      .map(r => String(r._id))
+      .sort();
+  }, [reminders]);
+
+  const shouldShowBanner = useMemo(() => {
+    const urgentCount = Number(stats.urgentRemindersCount) || 0;
+    if (loading || urgentCount <= 0) return false;
+
+    // While reminders list is loading, check if count matches previously dismissed
+    if (!remindersLoaded) {
+      try {
+        const stored = localStorage.getItem(DISMISSED_KEY);
+        if (!stored) return true;
+        const dismissed = JSON.parse(stored);
+        if (!Array.isArray(dismissed) || dismissed.length === 0) return true;
+        if (dismissed.length === urgentCount) return false;
+      } catch (_) {}
+      return true;
+    }
+
+    if (urgentReminderIds.length === 0) return false;
+
+    try {
+      const stored = localStorage.getItem(DISMISSED_KEY);
+      if (!stored) return true;
+      const dismissedList = JSON.parse(stored);
+      if (!Array.isArray(dismissedList) || dismissedList.length === 0) return true;
+      const dismissedSet = new Set(dismissedList);
+
+      // Show banner if there is at least one new urgent reminder ID not in dismissed set
+      return urgentReminderIds.some(id => !dismissedSet.has(id));
+    } catch (_) {
+      return true;
+    }
+  }, [loading, remindersLoaded, stats.urgentRemindersCount, urgentReminderIds]);
+
+  const handleDismissBanner = () => {
+    try {
+      if (urgentReminderIds.length > 0) {
+        localStorage.setItem(DISMISSED_KEY, JSON.stringify(urgentReminderIds));
+      }
+    } catch (e) {
+      console.warn('Failed to save dismissed urgent reminders:', e);
+    }
+  };
 
   /* ---------- Vehicles requiring attention (existing reminder data) ---------- */
   const attentionVehicles = (() => {
@@ -400,7 +464,7 @@ const Dashboard = () => {
       </div>
 
       {/* Urgent reminders banner */}
-      {!loading && Number(stats.urgentRemindersCount) > 0 && (
+      {!loading && shouldShowBanner && (
         <div className="alert dash-urgent-banner d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
           <div className="d-flex align-items-center gap-2">
             <AlertTriangle className="text-warning-emphasis flex-shrink-0" size={22} />
@@ -409,7 +473,11 @@ const Dashboard = () => {
               Vehicle(s) with periodic service, insurance, or PUC due within the next 7 days.
             </div>
           </div>
-          <Link to="/reminders" className="btn btn-sm btn-warning fw-semibold d-inline-flex align-items-center gap-1">
+          <Link
+            to="/reminders"
+            onClick={handleDismissBanner}
+            className="btn btn-sm btn-warning fw-semibold d-inline-flex align-items-center gap-1"
+          >
             <Bell size={14} /> View Reminders <ArrowRight size={14} />
           </Link>
         </div>
