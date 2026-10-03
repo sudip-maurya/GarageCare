@@ -55,7 +55,7 @@ const getDashboardStats = async (req, res) => {
         .populate('customer', 'name mobile')
         .populate('vehicle', 'vehicleNumber brand model')
         .sort({ date: -1, createdAt: -1 })
-        .limit(6)
+        .limit(15)
     ]);
 
     const summaries = await attachPaymentSummaries(allBills);

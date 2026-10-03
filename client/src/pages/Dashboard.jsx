@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import '../dashboard.css';
 import ScrollableCardList from '../components/ScrollableCardList';
+import RevenueAreaChart from '../components/RevenueAreaChart';
 
 const inr = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
 const startOfDay = (d) => {
@@ -149,10 +150,12 @@ const Dashboard = () => {
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
       const dayIndex = days - 1 - i;
+      const fullDateLabel = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
       const label = mode === '30d'
-        ? (dayIndex % 5 === 0 ? d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : '')
-        : d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
-      buckets.push({ key: dayKey(d), label, total: 0 });
+        ? (dayIndex % 5 === 0 ? fullDateLabel : '')
+        : fullDateLabel;
+      const isToday = i === 0;
+      buckets.push({ key: dayKey(d), label, fullDateLabel, isToday, total: 0 });
     }
 
     revenueBills.forEach(bill => {
@@ -168,14 +171,13 @@ const Dashboard = () => {
     return buckets;
   };
   const revenueSeries = buildRevenueSeries(revPeriod);
-  const maxRevenue = Math.max(...revenueSeries.map(s => s.total), 0);
   const periodRevenue = revenueSeries.reduce((sum, s) => sum + s.total, 0);
 
   /* ---------- Today's priority (existing reminders + bills) ---------- */
   const todayStart = startOfDay(new Date());
   const typeTone = { Service: 'type-primary', Insurance: 'type-info', Payment: 'type-success', PUC: 'type-secondary' };
   const safeReminders = Array.isArray(reminders) ? reminders : [];
-  const priorities = safeReminders.slice(0, 5).map(r => {
+  const priorities = safeReminders.slice(0, 10).map(r => {
     const type = r.type || 'Service';
     let due = { text: 'Today', tone: 'due-warning' };
     if (type === 'Payment') {
@@ -472,28 +474,11 @@ const Dashboard = () => {
               <div className="dash-revenue-total">{inr(periodRevenue)}</div>
               <small className="text-muted">Total Invoiced Revenue</small>
 
-              {revenueBills.length === 0 ? (
-                <div className="dash-empty">
-                  <span className="dash-empty-icon"><IndianRupee size={20} /></span>
-                  <strong>No revenue recorded yet</strong>
-                  <small className="text-muted">Bills generated will appear here.</small>
-                </div>
-              ) : (
-                <div className="dash-chart">
-                  {revenueSeries.map(s => (
-                    <div className="dash-chart-col" key={s.key}>
-                      <div className="dash-chart-bar-wrap">
-                        <div
-                          className={`dash-chart-bar ${s.total > 0 ? '' : 'zero'}`}
-                          style={{ height: `${s.total > 0 ? Math.max((s.total / (maxRevenue || 1)) * 100, 4) : 2}%` }}
-                          title={s.label ? `${s.label}: ${inr(s.total)}` : inr(s.total)}
-                        />
-                      </div>
-                      <div className="dash-chart-label">{s.label || '\u00A0'}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <RevenueAreaChart
+                series={revenueSeries}
+                period={revPeriod}
+                totalRevenue={periodRevenue}
+              />
             </div>
           </div>
         </div>
