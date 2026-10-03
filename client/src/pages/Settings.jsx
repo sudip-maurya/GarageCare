@@ -107,7 +107,10 @@ const Settings = () => {
     try {
       await api.put('/settings', profile);
       if (profile.garageName) {
-        try { localStorage.setItem('gc_garage_name', profile.garageName); } catch (_) {}
+        try {
+          localStorage.setItem('gc_garage_name', profile.garageName);
+          window.dispatchEvent(new Event('garage_name_updated'));
+        } catch (_) {}
       }
       setMessage({ type: 'success', text: 'Garage profile details updated successfully!' });
     } catch (err) {

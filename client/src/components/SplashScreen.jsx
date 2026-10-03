@@ -42,12 +42,16 @@ const SplashScreen = ({
         return (
           localStorage.getItem('gc_garage_name') ||
           localStorage.getItem('garage_name') ||
-          'Maurya Automobile'
+          'Maurya Automobiles'
         );
       } catch (_) {
-        return 'Maurya Automobile';
+        return 'Maurya Automobiles';
       }
     })();
+
+  const nameLen = (resolvedGarageName || '').length;
+  const isLongName = nameLen > 24;
+  const isVeryLongName = nameLen > 36;
 
   return (
     <div className="splash-container" role="status" aria-live="polite">
@@ -75,9 +79,12 @@ const SplashScreen = ({
             Garage<span>Care</span>
           </h1>
 
-          <div className="splash-garage-badge" title={resolvedGarageName}>
-            <Building2 size={13} />
-            <span>{resolvedGarageName}</span>
+          <div
+            className={`splash-garage-badge ${isVeryLongName ? 'badge-very-long' : isLongName ? 'badge-long' : ''}`}
+            title={resolvedGarageName}
+          >
+            <Building2 size={13} className="splash-garage-badge-icon" />
+            <span className="splash-garage-name">{resolvedGarageName}</span>
           </div>
         </div>
 

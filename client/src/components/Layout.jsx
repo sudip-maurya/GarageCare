@@ -42,6 +42,35 @@ const Layout = () => {
     () => typeof window !== 'undefined' && !window.matchMedia('(max-width: 991.98px)').matches
   );
 
+  const [garageName, setGarageName] = useState(() => {
+    try {
+      return localStorage.getItem('gc_garage_name') || 'Maurya Automobiles';
+    } catch (_) {
+      return 'Maurya Automobiles';
+    }
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem('gc_garage_name');
+        if (stored) setGarageName(stored);
+      } catch (_) {}
+    };
+    window.addEventListener('storage', handleUpdate);
+    window.addEventListener('garage_name_updated', handleUpdate);
+    api.get('/settings').then(res => {
+      if (res.data?.garageName) {
+        setGarageName(res.data.garageName);
+        try { localStorage.setItem('gc_garage_name', res.data.garageName); } catch (_) {}
+      }
+    }).catch(() => {});
+    return () => {
+      window.removeEventListener('storage', handleUpdate);
+      window.removeEventListener('garage_name_updated', handleUpdate);
+    };
+  }, []);
+
   // Position the sliding active indicator over the active link
   useLayoutEffect(() => {
     if (!navRef.current) return;
@@ -262,14 +291,14 @@ const Layout = () => {
               aria-expanded={menuOpen}
               aria-label="Account menu"
             >
-              <span className="dash-avatar" aria-hidden="true"><img src={GARAGE_LOGO} alt="Maurya Automobile logo" /></span>
-              <span className="header-profile-name d-none d-md-inline">Maurya Automobile</span>
+              <span className="dash-avatar" aria-hidden="true"><img src={GARAGE_LOGO} alt={`${garageName} logo`} /></span>
+              <span className="header-profile-name d-none d-md-inline">{garageName}</span>
               <ChevronDown size={15} className="text-muted d-none d-md-inline" />
             </button>
 
             <div className={`header-menu ${menuOpen ? 'open' : ''}`} role="menu" aria-hidden={!menuOpen}>
               <div className="header-menu-head">
-                <span className="header-menu-brand">Maurya Automobile</span>
+                <span className="header-menu-brand">{garageName}</span>
                 <small>Garage Management System</small>
               </div>
               <div className="header-menu-divider" />

@@ -81,6 +81,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
   margin-bottom: 1.5rem;
 }
 
@@ -130,28 +132,52 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Dynamic Garage Name Badge */
+/* Dynamic Garage Name Badge - Auto-width, no truncation, responsive wrapping */
 .splash-garage-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.45rem;
-  padding: 0.25rem 0.75rem;
-  background: rgba(37, 99, 235, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  padding: 0.35rem 0.95rem;
+  background: rgba(37, 99, 235, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.28);
   border-radius: 9999px;
-  font-size: 0.825rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #93c5fd;
-  max-width: 90%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.35;
+  transition: all 0.2s ease;
 }
 
-.splash-garage-badge svg {
+.splash-garage-badge.badge-long {
+  font-size: 0.78rem;
+  padding: 0.32rem 0.88rem;
+  border-radius: 18px;
+}
+
+.splash-garage-badge.badge-very-long {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 14px;
+}
+
+.splash-garage-badge svg,
+.splash-garage-badge-icon {
   color: #38bdf8;
   flex-shrink: 0;
+}
+
+.splash-garage-name {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  text-align: center;
 }
 
 /* Animated Loader Section */
@@ -364,7 +390,17 @@
   }
 
   .splash-garage-badge {
-    font-size: 0.78rem;
+    font-size: 0.82rem;
+    padding: 0.3rem 0.85rem;
+    max-width: 100%;
+  }
+
+  .splash-garage-badge.badge-long {
+    font-size: 0.75rem;
+  }
+
+  .splash-garage-badge.badge-very-long {
+    font-size: 0.69rem;
   }
 
   .splash-loader-stage {

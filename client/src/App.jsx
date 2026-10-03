@@ -71,12 +71,27 @@ function App() {
       return (
         localStorage.getItem('gc_garage_name') ||
         localStorage.getItem('garage_name') ||
-        'Maurya Automobile'
+        'Maurya Automobiles'
       );
     } catch (_) {
-      return 'Maurya Automobile';
+      return 'Maurya Automobiles';
     }
   });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem('gc_garage_name') || localStorage.getItem('garage_name');
+        if (stored) setGarageName(stored);
+      } catch (_) {}
+    };
+    window.addEventListener('storage', handleUpdate);
+    window.addEventListener('garage_name_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('storage', handleUpdate);
+      window.removeEventListener('garage_name_updated', handleUpdate);
+    };
+  }, []);
 
   const abortRef = useRef(false);
 

@@ -75,7 +75,7 @@ body {
 .app-topbar > div { min-width: 0; }
 .topbar-brand-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .header-profile { flex-shrink: 0; min-width: 0; }
-.header-profile-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+.header-profile-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
 .gc-page-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; text-align: left; }
 .gc-titles { min-width: 0; flex: 1 1 240px; }
 .gc-title {
